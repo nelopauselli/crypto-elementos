@@ -16,12 +16,44 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-10"></div>
+            <div class="col-10">
+                <div class="mx-auto card text-dark bg-light w-25 m-4">
+                    <div class="card-body">
+                        <form>
+                            <h5 class="card-title">Fusionador</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Modelo v1-x98q</h6>
+                            <div class="mb-3">
+                                <label for="elementoInicial" class="form-label">Elemento incial</label>
+                                <select id="elementoInicial" class="form-select">
+                                    <option value="H" selected>Hidr&oacute;geno</option>
+                                    <option value="He">Helio</option>
+                                    <option value="C">Carbono</option>
+                                    <option value="N">Nitr&oacute;geno</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label">Cantidad a fusionar</label>
+                                <input type="number" class="form-control" id="cantidad" dir="rtl" value="0"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="elementoFinal" class="form-label">Elemento final</label>
+                                <select id="elementoFinal" class="form-select">
+                                    <option value="H" selected>Hidr&oacute;geno</option>
+                                    <option value="He">Helio</option>
+                                    <option value="C">Carbono</option>
+                                    <option value="N">Nitr&oacute;geno</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary">Fusionar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="col-2 panel">
                 <ul class="list-group list-group-flush mt-3">
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">Hidrogeno</div>
+                            <div class="fw-bold">Hidr&oacute;geno</div>
                             Masa at&oacute;mica: 1,008
                         </div>
                         <span class="badge bg-primary rounded-pill">10000000</span>
