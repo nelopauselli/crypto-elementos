@@ -25,12 +25,15 @@ function ViewModel() {
     this.destino = ko.observable();
     this.fusionar = function () {
         var origen = this.origen();
-        console.log(destino);
-
+        var destino = this.destino();
+        
         if (origen.balance() >= this.cantidad()) {
             origen.balance(origen.balance() - this.cantidad());
             var masaAtomica = this.cantidad() * parseInt(origen.masaAtomica);
-            destino.balance(destino.balance() + parseInt(masaAtomica / parseInt(destino.masaAtomica)));
+            var nuevaMateria = parseInt(masaAtomica / parseInt(destino.masaAtomica));
+            setTimeout(function () {
+                destino.balance(destino.balance() + nuevaMateria);
+            }, 500);
         }
     }
 }
