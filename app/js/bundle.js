@@ -11,20 +11,19 @@ async function initWeb3() {
     }
 }
 
-function Element(contract, accountAddress) {
+function Element(contract, accountAddress, masaAtomica) {
     let self = this;
 
     this.contract = contract;
     this.name = ko.observable("...");
     this.symbol = ko.observable("...");
-    this.masaAtomica = ko.observable("...");
+    this.masaAtomica = masaAtomica;
     this.balance = ko.observable("...");
     this.enabled = ko.observable(true);
 
     this.contract.methods.name().call().then(value => self.name(value));
     this.contract.methods.symbol().call().then(value => self.symbol(value));
     //this.contract.methods._masaAtomica().call().then(value => self.masaAtomica(value));
-    self.masaAtomica(1.004)
     this.contract.methods.balanceOf(accountAddress).call().then(value => self.balance(value));
     this.accountAddress = accountAddress;
 
@@ -56,7 +55,14 @@ function ViewModel(accountAddress) {
         .then(response => response.json())
         .then(abi => {
             let contract = new document.web3.eth.Contract(abi, '0x3bF7f20Bf351C038561c8Cf7aAb0C7C09dEa35dB');
-            let element = new Element(contract, self.accountAddress)
+            let element = new Element(contract, self.accountAddress, 1.004)
+            self.elementos.push(element);
+        });
+    fetch('./json/helio.json')
+        .then(response => response.json())
+        .then(abi => {
+            let contract = new document.web3.eth.Contract(abi, '0x7e4c84851eaE19Cae6B522baB1644875CdD76B40');
+            let element = new Element(contract, self.accountAddress, 4.002602)
             self.elementos.push(element);
         });
 
