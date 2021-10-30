@@ -6,8 +6,7 @@ async function initWeb3() {
         console.log("usando web3");
         document.web3 = new Web3(window.web3.currentProvider);
     } else {
-        console.log("usando bsc por default");
-        document.web3 = new Web3('https://bsc-dataseed1.binance.org:443');
+        alert('No encontramos billetera compatible. :(');
     }
 }
 
@@ -61,12 +60,13 @@ function Element(abi, address, accountAddress, masaAtomica) {
                 //value: 1000000000000000000, // in WEI, which is equivalent to 1 ether
                 gasPrice: 0
             })
-            .then(value => {
-                console.log(value);
-                self.contract.methods.balanceOf(self.accountAddress)
-                    .call()
-                    .then(value => self.balance(value));
-            });
+            .then(self.refreshBalance);
+    }
+
+    this.refreshBalance = function () {
+        return self.contract.methods.balanceOf(self.accountAddress)
+            .call()
+            .then(value => self.balance(value));
     }
 }
 
@@ -106,15 +106,17 @@ function ViewModel(accountAddress) {
         var origen = this.origen();
         var destino = this.destino();
 
-        if (origen.balance() >= this.cantidad()) {
-            self.fusionador.fusionar(origen, this.cantidad(), destino)
-                .then();
-            // origen.balance(origen.balance() - this.cantidad());
-            // var masaAtomica = this.cantidad() * parseInt(origen.masaAtomica);
-            // var nuevaMateria = parseInt(masaAtomica / parseInt(destino.masaAtomica));
-            // setTimeout(function () {
-            //     destino.balance(destino.balance() + nuevaMateria);
-            // }, 500);
+        var balance = parseInt(origen.balance());
+        var cantidad = parseInt(this.cantidad());
+
+        if (balance >= cantidad) {
+            self.fusionador.fusionar(origen, cantidad, destino)
+                .then(() => {
+                    origen.refreshBalance();
+                    destino.refreshBalance();
+                });
+        } else {
+            alert(`balance insuficiente. Usted solo dispone de ${balance} ${origen.name()}`);
         }
     }
 }
@@ -133,7 +135,7 @@ function loadWalletAsync() {
                     if (accounts.length > 0) {
                         const account = accounts[0];
                         if (account) {
-                            return resolve(account);
+                            resolve(account);
                         }
                     }
                 });
@@ -148,5 +150,4 @@ function loadWalletAsync() {
             var vm = new ViewModel(address);
             ko.applyBindings(vm);
         });
-
 })(ko, Web3);
