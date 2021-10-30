@@ -1,0 +1,45 @@
+[
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "elementoAddr",
+          "type": "address"
+        }
+      ],
+      "name": "add",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "origen",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "destino",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "cantidad",
+          "type": "uint256"
+        }
+      ],
+      "name": "fusionar",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    }
+  ]

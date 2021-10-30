@@ -11,10 +11,34 @@ async function initWeb3() {
     }
 }
 
-function Element(contract, accountAddress, masaAtomica) {
+function Fusionador(abi, address, accountAddress) {
     let self = this;
 
-    this.contract = contract;
+    this.contract = new document.web3.eth.Contract(abi, '0xaae9095bE1BF40989948a461f2C760B98F9c4e66');
+    this.address = address;
+
+    this.accountAddress = accountAddress;
+    this.fusionar = function (origen, cantidad, destino) {
+        console.log(origen.address);
+        console.log(cantidad);
+        console.log(destino.address);
+
+        return self.contract.methods.fusionar(origen.address, destino.address, cantidad)
+            .send({
+                from: self.accountAddress,
+                gas: 470000,
+                //value: 1000000000000000000, // in WEI, which is equivalent to 1 ether
+                gasPrice: 0
+            })
+            .then(response => console.log(response));
+    }
+}
+
+function Element(abi, address, accountAddress, masaAtomica) {
+    let self = this;
+
+    this.contract = new document.web3.eth.Contract(abi, address);
+    this.address = address;
     this.name = ko.observable("...");
     this.symbol = ko.observable("...");
     this.masaAtomica = masaAtomica;
@@ -54,18 +78,22 @@ function ViewModel(accountAddress) {
     fetch('./json/hidrogeno.json')
         .then(response => response.json())
         .then(abi => {
-            let contract = new document.web3.eth.Contract(abi, '0x3bF7f20Bf351C038561c8Cf7aAb0C7C09dEa35dB');
-            let element = new Element(contract, self.accountAddress, 1.004)
+            let element = new Element(abi, '0x3bF7f20Bf351C038561c8Cf7aAb0C7C09dEa35dB', self.accountAddress, 1.004)
             self.elementos.push(element);
         });
     fetch('./json/helio.json')
         .then(response => response.json())
         .then(abi => {
-            let contract = new document.web3.eth.Contract(abi, '0x7e4c84851eaE19Cae6B522baB1644875CdD76B40');
-            let element = new Element(contract, self.accountAddress, 4.002602)
+            let element = new Element(abi, '0x7e4c84851eaE19Cae6B522baB1644875CdD76B40', self.accountAddress, 4.002602)
             self.elementos.push(element);
         });
 
+    fetch('./json/fusionador.json')
+        .then(response => response.json())
+        .then(abi => {
+            let fusionador = new Fusionador(abi, '0xaae9095bE1BF40989948a461f2C760B98F9c4e66', self.accountAddress)
+            self.fusionador = fusionador;
+        });
     // this.elementos.push({ name: "Helio", symbol: "He", masaAtomica: 4.003, balance: ko.observable(8000), enabled: ko.observable(true) });
     // this.elementos.push({ name: "Carbono", symbol: "C", masaAtomica: 12.01, balance: ko.observable(20), enabled: ko.observable(true) });
     // this.elementos.push({ name: "Nitrógeno", symbol: "N", masaAtomica: 14.0067, balance: ko.observable(0), enabled: ko.observable(true) });
@@ -79,12 +107,14 @@ function ViewModel(accountAddress) {
         var destino = this.destino();
 
         if (origen.balance() >= this.cantidad()) {
-            origen.balance(origen.balance() - this.cantidad());
-            var masaAtomica = this.cantidad() * parseInt(origen.masaAtomica);
-            var nuevaMateria = parseInt(masaAtomica / parseInt(destino.masaAtomica));
-            setTimeout(function () {
-                destino.balance(destino.balance() + nuevaMateria);
-            }, 500);
+            self.fusionador.fusionar(origen, this.cantidad(), destino)
+                .then();
+            // origen.balance(origen.balance() - this.cantidad());
+            // var masaAtomica = this.cantidad() * parseInt(origen.masaAtomica);
+            // var nuevaMateria = parseInt(masaAtomica / parseInt(destino.masaAtomica));
+            // setTimeout(function () {
+            //     destino.balance(destino.balance() + nuevaMateria);
+            // }, 500);
         }
     }
 }
@@ -115,9 +145,7 @@ function loadWalletAsync() {
     initWeb3()
         .then(loadWalletAsync)
         .then((address) => {
-            console.log(address);
             var vm = new ViewModel(address);
-            console.log(vm);
             ko.applyBindings(vm);
         });
 

@@ -62,7 +62,7 @@
                         </li>
                     </ul>
                     <div class="align-items-end bg-white pb-2" data-bind="foreach: elementos">
-                        <div class="ms-2 me-auto">
+                        <div class="ms-2 me-auto" data-bind="if: claimable">
                             <button class="btn btn-xs btn-success" data-bind="click: claim">
                                 <i class="fas fa-gift"></i>
                             </button>
