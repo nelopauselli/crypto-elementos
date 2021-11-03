@@ -1,9 +1,0 @@
-let H = await Hidrogeno.at('0x1174d2f660FF86cea664554380E7dBD247332BFe')
-
-let accounts = await web3.eth.getAccounts()
-let H = await Hidrogeno.deployed()
-H.name({gas: 200000})
-
-await H.claim({from: accounts[0], gas: 2000000})
-let balance = await H.balanceOf(accounts[0])
-balance.toNumber();
