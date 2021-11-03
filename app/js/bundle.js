@@ -43,6 +43,7 @@ function Element(abi, address, accountAddress, masaAtomica) {
     this.masaAtomica = masaAtomica;
     this.balance = ko.observable("...");
     this.enabled = ko.observable(true);
+    this.description = "Este elemento es usado para...";
 
     this.contract.methods.name().call().then(value => self.name(value));
     this.contract.methods.symbol().call().then(value => self.symbol(value));
