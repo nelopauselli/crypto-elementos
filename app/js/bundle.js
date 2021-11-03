@@ -75,18 +75,44 @@ function ViewModel(accountAddress) {
     this.elementos = ko.observableArray();
     this.accountAddress = accountAddress;
 
-    fetch('./json/hidrogeno.json')
+    fetch('./json/settings.json')
         .then(response => response.json())
-        .then(abi => {
-            let element = new Element(abi, '0x3bF7f20Bf351C038561c8Cf7aAb0C7C09dEa35dB', self.accountAddress, 1.004)
-            self.elementos.push(element);
+        .then(settings => {
+            fetch('./json/root.json')
+                .then(response => response.json())
+                .then(abi => {
+                    let root = new document.web3.eth.Contract(abi, settings.root);
+                    root.methods.contarElementos().call().then(value => {
+                        let length = parseInt(value);
+                        for (let index = 0; index < length; index++) {
+                            root.methods.obtenerElemento(index).call().then(address => {
+                                console.log(address);
+                                fetch('./json/elemento.json')
+                                    .then(response => response.json())
+                                    .then(abi => {
+                                        let element = new Element(abi, address, self.accountAddress)
+                                        self.elementos.push(element);
+                                    });
+                            });
+                        }
+                    });
+                    root.methods.contarFusionadores().call().then(value => {
+                        console.log("hay " + value + " fusionadores registrados");
+                    });
+                });
         });
-    fetch('./json/helio.json')
-        .then(response => response.json())
-        .then(abi => {
-            let element = new Element(abi, '0x7e4c84851eaE19Cae6B522baB1644875CdD76B40', self.accountAddress, 4.002602)
-            self.elementos.push(element);
-        });
+    // fetch('./json/hidrogeno.json')
+    //     .then(response => response.json())
+    //     .then(abi => {
+    //         let element = new Element(abi, '0x3bF7f20Bf351C038561c8Cf7aAb0C7C09dEa35dB', self.accountAddress, 1.004)
+    //         self.elementos.push(element);
+    //     });
+    // fetch('./json/helio.json')
+    //     .then(response => response.json())
+    //     .then(abi => {
+    //         let element = new Element(abi, '0x7e4c84851eaE19Cae6B522baB1644875CdD76B40', self.accountAddress, 4.002602)
+    //         self.elementos.push(element);
+    //     });
 
     fetch('./json/fusionador.json')
         .then(response => response.json())

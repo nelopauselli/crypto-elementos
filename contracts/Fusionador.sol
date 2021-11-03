@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import "./Elemento.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Fusionador {
+import "./Elemento.sol";
+import "./IFusionador.sol";
+
+contract Fusionador is IFusionador, Ownable {
     mapping(address=>Elemento) elementos;
 
     constructor () {
     }
 
-    function add(address elementoAddr) public payable {
+    function add(address elementoAddr) public payable onlyOwner {
         //TODO: validar quien puede agregar elementos a la lista
         Elemento elemento = Elemento(elementoAddr);
         elementos[elementoAddr] = elemento;
