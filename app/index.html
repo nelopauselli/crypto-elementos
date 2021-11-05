@@ -26,73 +26,44 @@
         Testnet
     </div>
     <div class="container-fluid p-4">
-        <div class="row" data-bind="foreach: elementos">
+        <div class="row">
+            <!-- ko foreach: rewards -->
             <div class="col-sm-6 col-lg-3 mb-4">
-                <div class="card" style="border: none">
+                <div class="card text-white bg-success h-100" style="border: none">
+                    <img src="/img/fusionador-2.jpg" class="bd-placeholder-img card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" data-bind="text: name">[Elemento]</h5>
+                        <div class="text-end" data-bind="text: pending"></div>
+                        <p class="card-text" data-bind="text: description"></p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <!-- ko ifnot: subscribed -->
+                        <button class="btn btn-primary" data-bind="click: subscribe">Anotarse</button>
+                        <!-- /ko -->
+                        <!-- ko if: subscribed -->
+                        <button class="btn btn-primary" data-bind="click: claim">Reclamar</button>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+             <!-- /ko -->
+            <!-- ko foreach: elementos -->
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card h-100" style="border: none">
                     <img src="/img/fusionador.jpg" class="bd-placeholder-img card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title" data-bind="text: name">[Elemento]</h5>
                         <div class="text-end" data-bind="text: balance"></div>
                         <p class="card-text" data-bind="text: description"></p>
-                        <a href="#" class="btn btn-primary">Fusionar</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button class="btn btn-primary" data-bind="click: fusionar">Fusionar</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row h-100">
-            <div class="col-10 align-self-center">
-                <div class="card mx-auto mt-4 text-white bg-secondary align-middle w-25">
-                    <div class="card-body">
-                        <form>
-                            <h5 class="card-title">Fusionador</h5>
-                            <h6 class="card-subtitle mb-2 text-white">Modelo v1-x98q</h6>
-                            <div class="mb-3">
-                                <label for="elementoInicial" class="form-label">Elemento incial</label>
-                                <select id="elementoInicial" class="form-select"
-                                    data-bind="options: elementos, optionsText: 'name', value: origen, optionsCaption: 'Seleccione...'">
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="cantidad" class="form-label">Cantidad a fusionar</label>
-                                <input type="number" class="form-control text-end" id="cantidad"
-                                    data-bind="value: cantidad" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="elementoFinal" class="form-label">Elemento final</label>
-                                <select id="elementoFinal" class="form-select"
-                                    data-bind="options: elementos, optionsText: 'name', value: destino, optionsCaption: 'Seleccione...'">
-                                </select>
-                            </div>
-                            <button type="button" class="btn btn-primary" data-bind="click: fusionar">Fusionar</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-2 py-3">
-                <div class="d-flex flex-column h-100">
-                    <ul class="list-group list-group-flush h-100 bg-white" data-bind="foreach: elementos">
-                        <li class="list-group-item d-flex justify-content-between align-items-start"
-                            data-bind="css: {disabled: !enabled}">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold" data-bind="html: name"></div>
-                                <span data-bind="text: balance"></span>
-                            </div>
-                            <span class="badge bg-primary rounded-pill" data-bind="text: masaAtomica"></span>
-                        </li>
-                    </ul>
-                    <div class="align-items-end bg-white pb-2" data-bind="foreach: elementos">
-                        <div class="ms-2 me-auto" data-bind="if: claimable">
-                            <button class="btn btn-xs btn-success" data-bind="click: claim">
-                                <i class="fas fa-gift"></i>
-                            </button>
-                        </div>
-                        </li>
-                    </div>
-                </div>
-            </div>
+             <!-- /ko -->
         </div>
     </div>
-    <h1></h1>
 
     <!-- Optional JavaScript; choose one of the two! -->
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -114,6 +85,10 @@
         integrity="sha512-2AL/VEauKkZqQU9BHgnv48OhXcJPx9vdzxN1JrKDVc4FPU/MEE/BZ6d9l0mP7VmvLsjtYwqiYQpDskK9dG8KBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="/js/element.js"></script>
+    <script src="/js/reward.js"></script>
+    <script src="/js/fusionador.js"></script>
+    <script src="/js/model.js"></script>
     <script src="/js/bundle.js"></script>
 
 </body>

@@ -5,10 +5,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Root is Ownable {
     address[] elementos;
+    address[] claimables;
     address[] fusionadores;
 
     function registrarElemento(address elemento) public payable onlyOwner {
         elementos.push(elemento);
+    }
+
+    function registrarElementoClaimable(address elemento) public payable onlyOwner {
+        registrarElemento(elemento);
+        claimables.push(elemento);
     }
 
     function quitarElemento(uint256 index) public payable onlyOwner {
@@ -18,6 +24,8 @@ contract Root is Ownable {
             elementos[i] = elementos[i + 1];
         }
         delete elementos[elementos.length - 1];
+
+        //TODO: ¿y de claimables?
     }
 
     function contarElementos() public view returns (uint256) {
@@ -27,6 +35,15 @@ contract Root is Ownable {
     function obtenerElemento(uint256 index) public view returns (address) {
         require(index < elementos.length, "Index out of range");
         return elementos[index];
+    }
+
+      function contarElementosClaimables() public view returns (uint256) {
+        return claimables.length;
+    }
+
+    function obtenerElementoClaimable(uint256 index) public view returns (address) {
+        require(index < claimables.length, "Index out of range");
+        return claimables[index];
     }
 
     function registrarFusionador(address fusionador)
