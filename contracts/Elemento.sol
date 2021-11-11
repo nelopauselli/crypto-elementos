@@ -39,6 +39,9 @@ contract Elemento is ERC20 {
         //TODO: validar que sea el fusionador
         uint256 resultante = cantidad / _masaAtomica;
         _mint(to, resultante);
-        return resultante;
+
+        uint256 delta = cantidad - resultante * _masaAtomica;
+        if (delta < cantidad) return delta;
+        return 0;
     }
 }

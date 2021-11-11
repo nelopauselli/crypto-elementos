@@ -30,6 +30,18 @@ class ViewModel {
 
                         root.methods.contarFusionadores().call().then(value => {
                             console.log("hay " + value + " fusionadores registrados");
+                            let length = parseInt(value);
+                            for (let index = 0; index < length; index++) {
+                                root.methods.obtenerFusionador(index).call()
+                                    .then(address => {
+                                        fetch('./json/fusionador.json')
+                                            .then(response => response.json())
+                                            .then(abi => {
+                                                let fusionador = new Fusionador(abi, address, self.accountAddress);
+                                                self.fusionador = fusionador;
+                                            });
+                                    });
+                            }
                         });
                     });
 
@@ -42,22 +54,18 @@ class ViewModel {
 
             });
 
-        fetch('./json/fusionador.json')
-            .then(response => response.json())
-            .then(abi => {
-                let fusionador = new Fusionador(abi, '0xaae9095bE1BF40989948a461f2C760B98F9c4e66', self.accountAddress);
-                self.fusionador = fusionador;
-            });
 
-        this.origen = ko.observable();
         this.cantidad = ko.observable();
         this.destino = ko.observable();
-        this.fusionar = function () {
-            var origen = this.origen();
-            var destino = this.destino();
+
+        this.fusionar = function (destinoSymbol, origen) {
+
+            var destino = ko.utils.arrayFirst(self.elementos(), function (e) {
+                return e.symbol() == destinoSymbol;
+            });
 
             var balance = parseInt(origen.balance());
-            var cantidad = parseInt(this.cantidad());
+            var cantidad = balance; //parseInt(this.cantidad());
 
             if (balance >= cantidad) {
                 self.fusionador.fusionar(origen, cantidad, destino)
@@ -68,6 +76,8 @@ class ViewModel {
             } else {
                 alert(`balance insuficiente. Usted solo dispone de ${balance} ${origen.name()}`);
             }
-        };
+        }
     }
+
+
 }

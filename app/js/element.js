@@ -23,8 +23,4 @@ class Element {
                 .then(value => self.balance(value));
         };
     }
-
-    fusionar = function(){
-        
-    }
 }
