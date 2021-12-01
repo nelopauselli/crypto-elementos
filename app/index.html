@@ -52,6 +52,9 @@
                 <div class="card h-100" style="border: none">
                     <img src="/img/fusionador.jpg" class="bd-placeholder-img card-img-top" alt="...">
                     <div class="card-body">
+                            <button class="btn p-0 float-right" data-bind="click: $root.addToMetamask.bind($data)">
+                                <img class="img-button" src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask">
+                            </button>
                         <h5 class="card-title" data-bind="text: name">[Elemento]</h5>
                         <div class="text-end" data-bind="text: balance"></div>
                         <p class="card-text" data-bind="text: description"></p>
