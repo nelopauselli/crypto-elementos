@@ -10,8 +10,6 @@ import "./IFusionador.sol";
 contract Fusionador is IFusionador, Ownable {
     mapping(address => Elemento) elementos;
 
-    constructor() {}
-
     function add(address elementoAddr) public payable onlyOwner {
         //TODO: validar quien puede agregar elementos a la lista
         Elemento elemento = Elemento(elementoAddr);
@@ -24,7 +22,9 @@ contract Fusionador is IFusionador, Ownable {
         uint256 cantidad
     ) public payable virtual {
         Elemento elementoOrigen = elementos[origen];
+        //TODO: validar que el elemento de origen estaba en la lista
         Elemento elementoDestino = elementos[destino];
+        //TODO: validar que el elemento de destino estaba en la lista
 
         uint256 materia = elementoOrigen.desintegrar(msg.sender, cantidad);
         materia = elementoDestino.integrar(msg.sender, materia);

@@ -6,17 +6,14 @@ class Fusionador {
         this.accountAddress = accountAddress;
         
         this.fusionar = function (origen, cantidad, destino) {
-            console.log(origen.address);
-            console.log(cantidad);
-            console.log(destino.address);
-
-            return self.contract.methods.fusionar(origen.address, destino.address, cantidad)
+                      return self.contract.methods.fusionar(origen.address, destino.address, cantidad)
                 .send({
                     from: self.accountAddress,
                     gas: 470000,
                     gasPrice: 0
                 })
-                .then(response => console.log(response));
+                .then(response => console.log(response))
+                .catch(err=>console.error(err));
         };
     }
 }

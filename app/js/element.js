@@ -10,6 +10,7 @@ class Element {
         this.balance = ko.observable("...");
         this.enabled = ko.observable(true);
         this.description = "Este elemento es usado para...";
+        this.fusions = ko.observableArray();
 
         this.contract.methods.name().call().then(value => self.name(value));
         this.contract.methods.symbol().call().then(value => self.symbol(value));

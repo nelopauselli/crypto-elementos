@@ -22,6 +22,13 @@ class ViewModel {
                                             .then(response => response.json())
                                             .then(abi => {
                                                 let element = new Element(abi, address, self.accountAddress);
+                                                for (var i = 0; i < self.elementos().length; i++) {
+                                                    var from = self.elementos()[i];
+                                                    from.fusions.push({
+                                                        from: from,
+                                                        to: element
+                                                    });
+                                                }
                                                 self.elementos.push(element);
                                             });
                                     });
@@ -58,11 +65,10 @@ class ViewModel {
         this.cantidad = ko.observable();
         this.destino = ko.observable();
 
-        this.fusionar = function (destinoSymbol, origen) {
+        this.fusionar = function (fusion) {
 
-            var destino = ko.utils.arrayFirst(self.elementos(), function (e) {
-                return e.symbol() == destinoSymbol;
-            });
+            var origen = fusion.from;
+            var destino = fusion.to;
 
             var balance = parseInt(origen.balance());
             var cantidad = balance; //parseInt(this.cantidad());

@@ -56,8 +56,10 @@
                         <div class="text-end" data-bind="text: balance"></div>
                         <p class="card-text" data-bind="text: description"></p>
                     </div>
-                    <div class="card-footer text-muted">
-                        <button class="btn btn-primary" data-bind="click: $root.fusionar.bind($data, 'He')">Fusionar en Helio</button>
+                    <div class="card-footer text-muted" data-bind="foreach: $data.fusions">
+                        <button class="btn btn-primary" data-bind="click: $root.fusionar.bind($data)">
+                            Fusionar en <span data-bind="text: $data.to.name"></span>
+                        </button>
                     </div>
                 </div>
             </div>
