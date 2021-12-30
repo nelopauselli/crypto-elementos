@@ -1,0 +1,28 @@
+.Element-card {
+    width: 200px;
+    margin: 10px;
+    padding: 2px;
+    border: solid 1px greenyellow;
+    border-radius: 2px;
+    box-shadow: 5px 10px 5px greenyellow;
+    flex-direction: row;
+}
+
+.Element-body {
+    display: inline;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Element-addToMetamask {
+    float: right;
+}
+
+.Element-addToMetamask img {
+    height: 5vmin;
+}
+
+.Element-icon {
+    height: 10vmin;
+
+}

@@ -1,0 +1,5 @@
+.Dashboard-body {
+    display: inline-flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
