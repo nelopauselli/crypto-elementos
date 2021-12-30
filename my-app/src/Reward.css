@@ -1,24 +1,20 @@
-.Element-card {
+.Reward-card {
     width: 200px;
     margin: 10px;
     padding: 2px;
     background-color: #282c34;
-    border: solid 1px rgb(250, 247, 88);
+    border: solid 1px fuchsia;
     border-radius: 2px;
-    box-shadow: 5px 10px 5px rgb(250, 247, 88);
+    box-shadow: 5px 10px 5px fuchsia;
     flex-direction: row;
 }
 
-.Element-body {
+.Reward-body {
     display: inline;
     flex-direction: row;
     align-items: center;
 }
 
-.Element-addToMetamask {
-    height: 5vmin;
-}
-
-.Element-icon {
+.Reward-icon {
     height: 10vmin;
 }

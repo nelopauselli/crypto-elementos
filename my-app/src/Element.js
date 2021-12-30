@@ -4,15 +4,6 @@ import { ethers } from 'ethers';
 import "./Element.css";
 
 class Element extends Component {
-    constructor(props) {
-        super(props);
-        this.setState({
-            name: "loading...",
-            symbol: '?',
-            balance: NaN,
-            description: ''
-        });
-    }
     getData() {
         const { ethereum } = window;
 

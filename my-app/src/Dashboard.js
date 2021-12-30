@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { ethers } from 'ethers';
 
 import Element from './Element';
+import Reward from './Reward';
+
 import './Dashboard.css';
 
 
@@ -10,7 +12,8 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             account: null,
-            elements: []
+            elements: [],
+            rewards: [],
         };
     }
 
@@ -76,14 +79,10 @@ class Dashboard extends Component {
                             fusionadores[index] = fusionadorAddress;
                         }
 
-                        this.setState({ account: this.state.account, elements: elementos });
-                    });
+                        let rewards = Array(1);
+                        rewards[0] = settings.rewards;
 
-                fetch('./json/hidrogeno.json')
-                    .then(response => response.json())
-                    .then(abi => {
-                        // let reward = new Reward(abi, settings.rewards, self.accountAddress);
-                        // self.rewards.push(reward);
+                        this.setState({ account: this.state.account, elements: elementos, rewards: rewards });
                     });
             });
     }
@@ -97,6 +96,7 @@ class Dashboard extends Component {
             <div >
                 <div>{this.state.account}</div>
                 <div className="Dashboard-body">
+                    {this.state.rewards.map(r => (<Reward address={r} account={this.state.account}></Reward>))}
                     {this.state.elements.map(e => (<Element address={e} account={this.state.account}></Element>))}
                 </div>
             </div>
