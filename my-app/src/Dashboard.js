@@ -62,21 +62,21 @@ class Dashboard extends Component {
                         for (let index = 0; index < elementosLength; index++) {
                             let elementAddress = await root.obtenerElemento(index);
                             console.log('Elemento: ', elementAddress);
-                            elementos[index]=elementAddress;
+                            elementos[index] = elementAddress;
                         }
 
                         let fusionadoresSize = await root.contarFusionadores();
                         console.log("hay " + fusionadoresSize + " fusionadores registrados");
                         let fusionadoresLength = parseInt(fusionadoresSize);
-                        
+
                         let fusionadores = Array(fusionadoresLength);
                         for (let index = 0; index < fusionadoresLength; index++) {
                             let fusionadorAddress = await root.obtenerFusionador(index);
                             console.log('Fusionador: ', fusionadorAddress);
-                            fusionadores[index]=fusionadorAddress;
+                            fusionadores[index] = fusionadorAddress;
                         }
 
-                        this.setState({account: this.state.account, elements : elementos});
+                        this.setState({ account: this.state.account, elements: elementos });
                     });
 
                 fetch('./json/hidrogeno.json')
@@ -85,29 +85,9 @@ class Dashboard extends Component {
                         // let reward = new Reward(abi, settings.rewards, self.accountAddress);
                         // self.rewards.push(reward);
                     });
-
             });
-
-        
-        // var data = [
-        //     { symbol: "H", name: "Hidrogeno", balance: NaN, descrption: 'El elemento original' },
-        //     { symbol: "He", name: "Helio", balance: NaN, descrption: 'Inflar globos' },
-        //     { symbol: "Li", name: "Litio", balance: NaN, descrption: 'Usado en baterias' },
-        //     { symbol: "Be", name: "Berilio", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "B", name: "Boro", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "C", name: "Carbono", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "N", name: "Nitrogeno", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "O", name: "Oxigeno", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "F", name: "Fluor", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "Ne", name: "Neon", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "Na", name: "Sodio", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "Mg", name: "Magnesio", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "Al", name: "Aluminio", balance: NaN, descrption: 'bla bla' },
-        //     { symbol: "Si", name: "Silicio", balance: NaN, descrption: 'bla bla' },
-        // ];
-        //this.setState({ elements: data })
     }
-    
+
     componentDidMount() {
         this.getData()
     }
