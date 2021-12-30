@@ -88,7 +88,7 @@ class ViewModel {
             const tokenAddress = token.address;
             const tokenSymbol = token.symbol();
             const tokenDecimals = 0;
-            const tokenImage = 'http://localhost:5500/img/atom.png';
+            const tokenImage = 'https://cryptoelementos.web.app/img/atom.png';
 
             try {
                 // wasAdded is a boolean. Like any RPC method, an error may be thrown.
