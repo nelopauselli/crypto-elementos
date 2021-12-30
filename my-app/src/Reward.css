@@ -18,3 +18,11 @@
 .Reward-icon {
     height: 10vmin;
 }
+
+.Reward-button{
+    background: transparent;
+    border: solid fuchsia;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+}

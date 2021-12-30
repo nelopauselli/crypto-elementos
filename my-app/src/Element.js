@@ -99,8 +99,8 @@ class Element extends Component {
                     <p>{element.description}</p>
                 </div>
                 <div className="Element-footer">
-                    <button className="btn btn-primary" onClick={() => this.fusionar()}>
-                        Fusionar en <span data-bind="text: $data.to.name"></span>
+                    <button className="Element-button" onClick={() => this.fusionar()}>
+                        Fusionar
                     </button>
                 </div>
             </div>

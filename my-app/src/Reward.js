@@ -69,7 +69,7 @@ class Reward extends Component {
                     <p>{reward.description}</p>
                 </div>
                 <div className="Reward-footer">
-                    <button className="btn btn-primary" onClick={() => this.claim()}>
+                    <button className="Reward-button" onClick={() => this.claim()}>
                         Reclamar
                     </button>
                 </div>

@@ -22,3 +22,11 @@
 .Element-icon {
     height: 10vmin;
 }
+
+.Element-button{
+    background: transparent;
+    border: solid rgb(250, 247, 88);
+    color: white;
+    padding: 10px;
+    margin: 5px;
+}
