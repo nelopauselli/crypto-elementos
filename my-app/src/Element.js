@@ -62,14 +62,11 @@ class Element extends Component {
             <div className="Element-card">
                 <img className="Element-icon" src="/logo192.png" alt="..." />
                 <div className="Element-body">
-                    <div className="Element-addToMetamask">
-                        <button onClick={() => this.addToMetamask(element)}>
-                            <img className="img-button" src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
-                        </button>
-                    </div>
-                    <h3>{element.symbol}</h3>
-                    <h5>{element.name}</h5>
-                    <div>{element.balance}</div>
+                    <h3>{element.name}</h3>
+                    <a href="#" className="Element-addToMetamask">
+                        <img className="img-button" src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
+                    </a>
+                    <div>{element.balance} {element.symbol}</div>
                     <p>{element.description}</p>
                 </div>
                 <div className="Element-footer">
