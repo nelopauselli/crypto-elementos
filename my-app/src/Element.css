@@ -16,7 +16,9 @@
 }
 
 .Element-addToMetamask {
-    height: 5vmin;
+    height: 24px;
+    margin: 5px;
+    vertical-align: middle;
 }
 
 .Element-icon {

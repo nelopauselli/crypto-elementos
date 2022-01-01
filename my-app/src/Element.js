@@ -53,6 +53,7 @@ class Element extends Component {
             setTimeout(() => {
                 this.reloadBalance();
             }, 1000);
+            return;
         }
 
         console.log(`cargando balance de ${this.state.name} para ${this.props.account}`);
@@ -65,7 +66,7 @@ class Element extends Component {
 
         setTimeout(() => {
             this.reloadBalance();
-        }, 5000);
+        }, 30000);
     }
 
     componentDidMount() {
@@ -132,12 +133,14 @@ class Element extends Component {
                 <img className="Element-icon" src="/logo192.png" alt="..." />
                 <div className="Element-body">
                     <h3>
-                        <div>{element.name}</div>
+                        <div>
+                            {element.name}
+                            <img className="Element-addToMetamask" onClick={this.addToMetamask} src="img/metamask.svg" alt="Agregar a Metamask" title="Agregar a Metamask" />
+                        </div>
                         <div>
                             <Address value={this.props.address}></Address>
                         </div>
                     </h3>
-                    <img className="Element-addToMetamask" onClick={() => this.addToMetamask()} src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
                     <div>{element.balance} {element.symbol}</div>
                     <p>{element.description}</p>
                 </div>

@@ -87,8 +87,8 @@ class Dashboard extends Component {
                     <Wallet onChange={this.onWalletChange}></Wallet>
                 </div>
                 <div className="Dashboard-body">
-                    {this.state.rewards.map(r => (<Reward address={r} account={this.state.account}></Reward>))}
-                    {this.state.elements.map(e => (<Element address={e} account={this.state.account}></Element>))}
+                    {this.state.rewards.map(r => (<Reward key={r} address={r} account={this.state.account}></Reward>))}
+                    {this.state.elements.map(e => (<Element key={e} address={e} account={this.state.account}></Element>))}
                 </div>
             </div>
         );
