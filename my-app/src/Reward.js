@@ -56,6 +56,7 @@ class Reward extends Component {
             setTimeout(() => {
                 this.reloadBalance();
             }, 1000);
+            return;
         }
 
         console.log(`cargando pendiente de ${this.state.name} para ${this.props.account}`);

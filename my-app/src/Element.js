@@ -30,7 +30,7 @@ class Element extends Component {
         fetch('./json/elemento.json')
             .then(response => response.json())
             .then(async (abi) => {
-                const {address} = this.props;
+                const { address } = this.props;
                 console.log(`cargando elemento de la dirección ${address}`);
                 let contract = new ethers.Contract(this.props.address, abi, signer);
 
@@ -122,10 +122,6 @@ class Element extends Component {
         }
     }
 
-    fusionar(element) {
-        alert(`TODO: fusionar en ${element.symbol}`);
-    }
-
     render() {
         const element = this.state;
         return element ? (
@@ -143,11 +139,6 @@ class Element extends Component {
                     </h3>
                     <div>{element.balance} {element.symbol}</div>
                     <p>{element.description}</p>
-                </div>
-                <div className="Element-footer">
-                    <button className="Element-button" onClick={() => this.fusionar()}>
-                        Fusionar
-                    </button>
                 </div>
             </div>
         ) : (<div></div>);

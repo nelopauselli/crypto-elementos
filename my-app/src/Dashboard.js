@@ -4,9 +4,9 @@ import { ethers } from 'ethers';
 import Wallet from './Wallet';
 import Element from './Element';
 import Reward from './Reward';
+import Merger from './Merger';
 
 import './Dashboard.css';
-
 
 class Dashboard extends Component {
     constructor(props) {
@@ -16,8 +16,10 @@ class Dashboard extends Component {
             account: null,
             elements: [],
             rewards: [],
+            mergers: []
         };
         this.onWalletChange = this.onWalletChange.bind(this);
+        this.onMerge = this.onMerge.bind(this);
     }
 
     async getData() {
@@ -56,24 +58,37 @@ class Dashboard extends Component {
                         console.log("hay " + fusionadoresSize + " fusionadores registrados");
                         let fusionadoresLength = parseInt(fusionadoresSize);
 
-                        let fusionadores = Array(fusionadoresLength);
+                        let mergers = Array(fusionadoresLength);
                         for (let index = 0; index < fusionadoresLength; index++) {
-                            let fusionadorAddress = await root.obtenerFusionador(index);
-                            console.log('Fusionador: ', fusionadorAddress);
-                            fusionadores[index] = fusionadorAddress;
+                            let mergerAddress = await root.obtenerFusionador(index);
+                            console.log('Fusionador: ', mergerAddress);
+                            mergers[index] = mergerAddress;
                         }
 
                         let rewards = Array(1);
                         rewards[0] = settings.rewards;
 
-                        this.setState({ account: this.state.account, elements: elementos, rewards: rewards });
+                        this.setState({
+                            account: this.state.account,
+                            elements: elementos,
+                            rewards: rewards,
+                            mergers: mergers
+                        });
                     });
             });
     }
 
-    onWalletChange(account){
+    onWalletChange(account) {
         console.log(`Cuenta: ${account}`);
-        this.setState({account: account});
+        this.setState({ account: account });
+    }
+
+    onMerge(e) {
+        console.log("onMerge");
+        this.setState({
+            mergeFrom: e.address,
+            mergeBalance: e.balance
+        });
     }
 
     componentDidMount() {
@@ -89,6 +104,7 @@ class Dashboard extends Component {
                 <div className="Dashboard-body">
                     {this.state.rewards.map(r => (<Reward key={r} address={r} account={this.state.account}></Reward>))}
                     {this.state.elements.map(e => (<Element key={e} address={e} account={this.state.account}></Element>))}
+                    {this.state.mergers.map(m => (<Merger key={m} address={m} account={this.state.account} elements={this.state.elements}></Merger>))}
                 </div>
             </div>
         );
