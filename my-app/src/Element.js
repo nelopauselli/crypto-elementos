@@ -2,8 +2,20 @@ import React, { Component } from 'react'
 import { ethers } from 'ethers';
 
 import "./Element.css";
+import Address from './Address';
 
 class Element extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            contract: null,
+            name: null,
+            symbol: null,
+            balance: null
+        }
+    }
+
     getData() {
         const { ethereum } = window;
 
@@ -19,26 +31,52 @@ class Element extends Component {
             .then(response => response.json())
             .then(async (abi) => {
                 const address = this.props.address;
-                console.log(`cargando elemento de la dirección ${address} para la cuenta ${this.props.account}`);
+                console.log(`cargando elemento de la dirección ${address}`);
                 let contract = new ethers.Contract(this.props.address, abi, signer);
 
                 let name = await contract.name();
                 let symbol = await contract.symbol();
-                let balance = await contract.balanceOf(this.props.account);
-                console.log(`Balance of ${name}: ${balance}`);
 
                 this.setState({
                     contract: contract,
-                    address: address,
                     name: name,
                     symbol: symbol,
-                    balance: parseInt(balance)
                 });
             });
     }
 
+    async reloadBalance() {
+        if (!this.state.contract || !this.props.account) {
+            this.setState({
+                balance: undefined
+            });
+            setTimeout(() => {
+                this.reloadBalance();
+            }, 1000);
+        }
+
+        console.log(`cargando balance de ${this.state.name} para ${this.props.account}`);
+        let balance = await this.state.contract.balanceOf(this.props.account);
+        console.log(`Balance of ${this.state.name}: ${balance}`);
+
+        this.setState({
+            balance: parseInt(balance)
+        });
+
+        setTimeout(() => {
+            this.reloadBalance();
+        }, 5000);
+    }
+
     componentDidMount() {
-        this.getData()
+        this.getData();
+        setTimeout(() => {
+            this.reloadBalance();
+        }, 500);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     async addToMetamask() {
@@ -94,7 +132,10 @@ class Element extends Component {
                 <img className="Element-icon" src="/logo192.png" alt="..." />
                 <div className="Element-body">
                     <h3>{element.name}</h3>
-                    <img className="Element-addToMetamask" onClick={()=> this.addToMetamask()} src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
+                    <div>
+                        <Address value={this.props.address}></Address>
+                    </div>
+                    <img className="Element-addToMetamask" onClick={() => this.addToMetamask()} src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
                     <div>{element.balance} {element.symbol}</div>
                     <p>{element.description}</p>
                 </div>

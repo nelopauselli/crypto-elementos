@@ -4,6 +4,20 @@ import { ethers } from 'ethers';
 import "./Reward.css";
 
 class Reward extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            contract: null,
+            address: null,
+            name: null,
+            symbol: null,
+            subscribed: null,
+            pending: null,
+            description: null
+        }
+    }
+
     getData() {
         const { ethereum } = window;
 
@@ -24,27 +38,50 @@ class Reward extends Component {
 
                 let name = await contract.name();
                 let symbol = await contract.symbol();
-                let subscribed = await contract.subscribed();
-                let pending = await contract.pendingReward(); //signer // { from: this.accountAddress }
-                console.log(`Pending of ${name}: ${pending}`);
-                let description = subscribed
-                    ? `Usted tiene ${pending} ${symbol} pendientes de reclamar`
-                    : `Usted no está subscripto a este generador de ${symbol}`;
 
                 this.setState({
                     contract: contract,
                     address: address,
                     name: name,
-                    symbol: symbol,
-                    subscribed: subscribed,
-                    pending: parseInt(pending),
-                    description: description
+                    symbol: symbol
                 });
             });
     }
 
+    async reloadBalance() {
+        if (!this.state.contract || !this.props.account) {
+            this.setState({
+                balance: undefined
+            });
+            setTimeout(() => {
+                this.reloadBalance();
+            }, 1000);
+        }
+
+        console.log(`cargando pendiente de ${this.state.name} para ${this.props.account}`);
+        let subscribed = await this.state.contract.subscribed();
+        let pending = await this.state.contract.pendingReward();
+        console.log(`Pending of ${this.state.name}: ${pending}`);
+        let description = subscribed
+            ? `Usted tiene ${pending} ${this.state.symbol} pendientes de reclamar`
+            : `Usted no está subscripto a este generador de ${this.state.symbol}`;
+
+        this.setState({
+            subscribed: subscribed,
+            pending: parseInt(pending),
+            description: description
+        });
+
+        setTimeout(() => {
+            this.reloadBalance();
+        }, 5000);
+    }
+
     componentDidMount() {
-        this.getData()
+        this.getData();
+        setTimeout(() => {
+            this.reloadBalance();
+        }, 500);
     }
 
     async subscribe() {

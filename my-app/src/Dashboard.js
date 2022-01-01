@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ethers } from 'ethers';
 
+import Wallet from './Wallet';
 import Element from './Element';
 import Reward from './Reward';
 
@@ -11,38 +12,21 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            message: 'Cargando...',
             account: null,
             elements: [],
             rewards: [],
         };
-    }
-
-    async initWallet() {
-        const { ethereum } = window;
-        if (!ethereum) {
-            alert('No encontramos billetera compatible. :(');
-            return;
-        }
-
-        console.log("usando ethereum");
-
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        console.log(`Encontramos ${accounts.length} direcciones`);
-        if (accounts.length) {
-            this.setState({ account: accounts[0], elements: [] });
-        }
+        this.onWalletChange = this.onWalletChange.bind(this);
     }
 
     async getData() {
-        await this.initWallet();
-
         const { ethereum } = window;
 
         if (!ethereum) {
             console.error('No encontramos billetera compatible. :(');
             return;
         }
-
 
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
@@ -87,14 +71,21 @@ class Dashboard extends Component {
             });
     }
 
+    onWalletChange(account){
+        console.log(`Cuenta: ${account}`);
+        this.setState({account: account});
+    }
+
     componentDidMount() {
         this.getData()
     }
 
     render() {
         return (
-            <div >
-                <div>{this.state.account}</div>
+            <div>
+                <div>
+                    <Wallet onChange={this.onWalletChange}></Wallet>
+                </div>
                 <div className="Dashboard-body">
                     {this.state.rewards.map(r => (<Reward address={r} account={this.state.account}></Reward>))}
                     {this.state.elements.map(e => (<Element address={e} account={this.state.account}></Element>))}
