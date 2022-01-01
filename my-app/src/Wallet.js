@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Address from './Address';
 
 class Wallet extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class Wallet extends Component {
 
     render() {
         return (this.state.account
-            ? (<button>{this.state.account}</button>)
+            ? (<Address value={this.state.account}></Address>)
             : (<button onClick={this.connect}>Conectar billetera</button>)
         );
     }

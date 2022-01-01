@@ -10,7 +10,7 @@ class Element extends Component {
 
         this.state = {
             contract: null,
-            name: null,
+            name: "...",
             symbol: null,
             balance: null
         }
@@ -30,7 +30,7 @@ class Element extends Component {
         fetch('./json/elemento.json')
             .then(response => response.json())
             .then(async (abi) => {
-                const address = this.props.address;
+                const {address} = this.props;
                 console.log(`cargando elemento de la dirección ${address}`);
                 let contract = new ethers.Contract(this.props.address, abi, signer);
 
@@ -131,10 +131,12 @@ class Element extends Component {
             <div className="Element-card">
                 <img className="Element-icon" src="/logo192.png" alt="..." />
                 <div className="Element-body">
-                    <h3>{element.name}</h3>
-                    <div>
-                        <Address value={this.props.address}></Address>
-                    </div>
+                    <h3>
+                        <div>{element.name}</div>
+                        <div>
+                            <Address value={this.props.address}></Address>
+                        </div>
+                    </h3>
                     <img className="Element-addToMetamask" onClick={() => this.addToMetamask()} src="img/metamask.png" alt="Agregar a Metamask" title="Agregar a Metamask" />
                     <div>{element.balance} {element.symbol}</div>
                     <p>{element.description}</p>

@@ -1,4 +1,11 @@
 .Address-value {
-    font-size: 0.8em;
-    color: gray
+    font-size: 0.6em;
+    color: gray;
+}
+
+.Address-copy {
+    max-height: 16px;
+    color: gray;
+    margin: 5px;
+    vertical-align: middle;
 }
