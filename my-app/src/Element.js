@@ -78,10 +78,6 @@ class Element extends Component {
         }, 500);
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
-
     async addToMetamask() {
         const { ethereum } = window;
 

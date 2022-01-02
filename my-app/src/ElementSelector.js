@@ -9,7 +9,11 @@ class ElementSelector extends Component {
     }
 
     componentDidMount() {
-        let elements = this.props.source.map(e => JSON.parse(localStorage.getItem(e)));
+        let elements = this.props.source.map(e => {
+            let item = localStorage.getItem(e);
+            if (item) return JSON.parse(item);
+            return { address: e, name: e };
+        });
         this.setState({ elements: elements });
     }
 
