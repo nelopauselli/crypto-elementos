@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ethers } from 'ethers';
+import blockchainAdapter from './services/BlockchainAdapter';
 
 import "./Merger.css";
 import Address from './Address';
@@ -24,22 +24,12 @@ class Merger extends Component {
     }
 
     getData() {
-        const { ethereum } = window;
-
-        if (!ethereum) {
-            console.error('No encontramos billetera compatible. :(');
-            return;
-        }
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-
         fetch('./json/fusionador.json')
             .then(response => response.json())
             .then(async (abi) => {
                 const { address } = this.props;
                 console.log(`cargando fusionador de la dirección ${address}`);
-                let contract = new ethers.Contract(this.props.address, abi, signer);
+                let contract = blockchainAdapter.Contract(this.props.address, abi);
 
                 //let name = await contract.name();
 
@@ -59,7 +49,7 @@ class Merger extends Component {
         this.setState({ from: e.target.value });
     }
 
-    onQuantityChange(e){
+    onQuantityChange(e) {
         console.log(e.target.value);
         this.setState({ quantity: parseInt(e.target.value) });
     }
@@ -69,12 +59,12 @@ class Merger extends Component {
         this.setState({ to: e.target.value });
     }
 
-    approve(){
+    approve() {
         alert("TODO: approve")
     }
 
     fusionar() {
-        const {contract, from, to, quantity } = this.state;
+        const { contract, from, to, quantity } = this.state;
         console.log(`fusionando ${from} x ${quantity} => ${to}`);
         contract.fusionar(from, to, quantity);
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { ethers } from 'ethers';
 
 import WalletContext from './WalletContext';
+import blockchainAdapter from './services/BlockchainAdapter';
 
 import Element from './Element';
 import Reward from './Reward';
@@ -26,16 +26,6 @@ class Dashboard extends Component {
     }
 
     async getData() {
-        const { ethereum } = window;
-
-        if (!ethereum) {
-            console.error('No encontramos billetera compatible. :(');
-            return;
-        }
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-
         fetch('./json/settings.json')
             .then(response => response.json())
             .then(settings => {
@@ -44,7 +34,7 @@ class Dashboard extends Component {
                     .then(async (abi) => {
                         console.log(abi);
 
-                        let root = new ethers.Contract(settings.root, abi, signer);
+                        let root = blockchainAdapter.Contract(settings.root, abi);
 
                         let elementosSize = await root.contarElementos();
                         console.log("hay " + elementosSize + " elementos registrados");

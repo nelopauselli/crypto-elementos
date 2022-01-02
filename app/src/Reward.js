@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ethers } from 'ethers';
+import blockchainAdapter from './services/BlockchainAdapter';
 
 import WalletContext from './WalletContext';
 
@@ -21,22 +21,12 @@ class Reward extends Component {
     }
 
     getData() {
-        const { ethereum } = window;
-
-        if (!ethereum) {
-            console.error('No encontramos billetera compatible. :(');
-            return;
-        }
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-
         fetch('./json/hidrogeno.json')
             .then(response => response.json())
             .then(async (abi) => {
                 const address = this.props.address;
                 console.log(`cargando elemento de la dirección ${address}`);
-                let contract = new ethers.Contract(this.props.address, abi, signer);
+                let contract = blockchainAdapter.Contract(this.props.address, abi);
 
                 let name = await contract.name();
                 let symbol = await contract.symbol();

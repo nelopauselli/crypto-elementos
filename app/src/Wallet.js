@@ -23,11 +23,15 @@ class Wallet extends Component {
 
         console.log("usando ethereum");
 
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        console.log(`Encontramos ${accounts.length} direcciones`);
-        if (accounts.length) {
-            this.setState({ account: accounts[0] });
-            this.props.onChange(accounts[0])
+        try {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            console.log(`Encontramos ${accounts.length} direcciones`);
+            if (accounts.length) {
+                this.setState({ account: accounts[0] });
+                this.props.onChange(accounts[0])
+            }
+        } catch (ex) {
+            this.setState({ account: null });
         }
     }
 
