@@ -3,13 +3,21 @@ import React, { Component } from 'react'
 import "./ElementSelector.css";
 
 class ElementSelector extends Component {
-    render(){
+    constructor(props) {
+        super(props);
+        this.state = { elements: [] }
+    }
+
+    componentDidMount() {
+        let elements = this.props.source.map(e => JSON.parse(localStorage.getItem(e)));
+        this.setState({ elements: elements });
+    }
+
+    render() {
         return (
-            <div>
-                <select onChange={e=>this.props.onChange(e)}>
-                    {this.props.source.map(e=><option key={e} value={e}>{e}</option>)}
-                </select>
-            </div>
+            <select className={this.props.className} onChange={e => this.props.onChange(e)}>
+                {this.state.elements.map(e => <option key={e.address} value={e.address}>{e.name}</option>)}
+            </select>
         )
     }
 }

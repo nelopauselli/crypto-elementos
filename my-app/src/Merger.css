@@ -23,9 +23,35 @@
     height: 10vmin;
 }
 
+.Merger-quantity {
+    width: 80%;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    font-size: 1.1em;
+    text-align: end;
+    background-color: #282c34;
+    border: solid 1px rgb(102, 225, 246);
+    border-radius: 2px;
+    box-shadow: 5px 5px 5px rgb(102, 225, 246);
+}
+
+.Merger-selector {
+    width: 40%;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    font-size: 1em;
+    text-align: end;
+    background-color: #282c34;
+    border: solid 1px rgb(102, 225, 246);
+    border-radius: 2px;
+    box-shadow: 5px 5px 5px rgb(102, 225, 246);
+}
+
 .Merger-button{
     background: transparent;
-    border: solid blueviolet;
+    border: solid rgb(102, 225, 246);
     color: white;
     padding: 10px;
     margin: 5px;

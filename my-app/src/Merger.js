@@ -94,9 +94,10 @@ class Merger extends Component {
                         </div>
                     </h3>
                     <div>
-                        <input value={this.state.quantity} onChange={this.onQuantityChange}></input>
-                        <ElementSelector source={this.props.elements} onChange={this.onChangeFrom}></ElementSelector>
-                        <ElementSelector source={this.props.elements} onChange={this.onChangeTo}></ElementSelector>
+                        <input className="Merger-quantity" value={this.state.quantity} onChange={this.onQuantityChange}></input>
+                        <ElementSelector className="Merger-selector" source={this.props.elements} onChange={this.onChangeFrom}></ElementSelector>
+                        &nbsp;&gt;
+                        <ElementSelector className="Merger-selector" source={this.props.elements} onChange={this.onChangeTo}></ElementSelector>
                     </div>
                 </div>
                 <div className="Merger-footer">

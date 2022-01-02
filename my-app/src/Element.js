@@ -42,6 +42,8 @@ class Element extends Component {
                     name: name,
                     symbol: symbol,
                 });
+
+                localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
             });
     }
 
