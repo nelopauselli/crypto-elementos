@@ -18,36 +18,32 @@ class Element extends Component {
         }
     }
 
-    getData() {
-        fetch('./json/elemento.json')
-            .then(response => response.json())
-            .then(async (abi) => {
-                const { address } = this.props;
-                console.log(`cargando elemento de la dirección ${address}`);
-                let contract = blockchainAdapter.Contract(this.props.address, abi);
+    async getData() {
+        const { address } = this.props;
+        console.log(`cargando elemento de la dirección ${address}`);
+        
+        let contract = await blockchainAdapter.ElementContract(this.props.address);
 
-                let name = await contract.name();
-                let symbol = await contract.symbol();
+        let name = await contract.name();
+        let symbol = await contract.symbol();
 
-                this.setState({
-                    contract: contract,
-                    name: name,
-                    symbol: symbol,
-                });
+        this.setState({
+            name: name,
+            symbol: symbol,
+        });
 
-                localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
+        localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
 
-                setTimeout(() => {
-                    this.reloadBalance();
-                }, 1000);
-            });
+        setTimeout(() => {
+            this.reloadBalance();
+        }, 1000);
     }
 
     async reloadBalance() {
+        let contract = await blockchainAdapter.ElementContract(this.props.address);
         let wallet = this.context;
-        console.log(wallet);
-
-        if (!this.state.contract || !wallet) {
+        
+        if (!contract || !wallet) {
             this.setState({
                 balance: undefined
             });
@@ -58,7 +54,7 @@ class Element extends Component {
         }
 
         console.log(`cargando balance de ${this.state.name} para ${wallet}`);
-        let balance = await this.state.contract.balanceOf(wallet);
+        let balance = await contract.balanceOf(wallet);
         console.log(`Balance of ${this.state.name}: ${balance}`);
 
         this.setState({

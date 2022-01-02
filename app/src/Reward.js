@@ -10,8 +10,6 @@ class Reward extends Component {
         super(props);
 
         this.state = {
-            contract: null,
-            address: null,
             name: null,
             symbol: null,
             subscribed: null,
@@ -20,31 +18,24 @@ class Reward extends Component {
         }
     }
 
-    getData() {
-        fetch('./json/hidrogeno.json')
-            .then(response => response.json())
-            .then(async (abi) => {
-                const address = this.props.address;
-                console.log(`cargando elemento de la dirección ${address}`);
-                let contract = blockchainAdapter.Contract(this.props.address, abi);
+    async getData() {
+        let contract = await blockchainAdapter.RewardContract(this.props.address);
 
-                let name = await contract.name();
-                let symbol = await contract.symbol();
+        let name = await contract.name();
+        let symbol = await contract.symbol();
 
-                this.setState({
-                    contract: contract,
-                    address: address,
-                    name: name,
-                    symbol: symbol
-                });
-            });
+        this.setState({
+            name: name,
+            symbol: symbol
+        });
     }
 
     async reloadBalance() {
+        let contract = await blockchainAdapter.RewardContract(this.props.address);
         let wallet = this.context;
         console.log(wallet);
 
-        if (!this.state.contract || !wallet) {
+        if (!contract || !wallet) {
             this.setState({
                 balance: undefined
             });
@@ -55,8 +46,8 @@ class Reward extends Component {
         }
 
         console.log(`cargando pendiente de ${this.state.name} para ${wallet}`);
-        let subscribed = await this.state.contract.subscribed();
-        let pending = await this.state.contract.pendingReward();
+        let subscribed = await contract.subscribed();
+        let pending = await contract.pendingReward();
         console.log(`Pending of ${this.state.name}: ${pending}`);
         let description = subscribed
             ? `Usted tiene ${pending} ${this.state.symbol} pendientes de reclamar`
@@ -85,11 +76,13 @@ class Reward extends Component {
     }
 
     async getPendingReward() {
-        await this.state.contract.pendingReward();
+        let contract = await blockchainAdapter.RewardContract(this.props.address);
+        await contract.pendingReward();
     }
 
     async claim() {
-        await this.state.contract.claim();
+        let contract = await blockchainAdapter.RewardContract(this.props.address);
+        await contract.claim();
     }
 
     render() {

@@ -10,7 +10,6 @@ class Merger extends Component {
         super(props);
 
         this.state = {
-            contract: null,
             name: "Fusionador",
             from: props.elements[0],
             to: props.elements[0],
@@ -21,27 +20,6 @@ class Merger extends Component {
         this.onChangeFrom = this.onChangeFrom.bind(this);
         this.onQuantityChange = this.onQuantityChange.bind(this);
         this.onChangeTo = this.onChangeTo.bind(this);
-    }
-
-    getData() {
-        fetch('./json/fusionador.json')
-            .then(response => response.json())
-            .then(async (abi) => {
-                const { address } = this.props;
-                console.log(`cargando fusionador de la dirección ${address}`);
-                let contract = blockchainAdapter.Contract(this.props.address, abi);
-
-                //let name = await contract.name();
-
-                this.setState({
-                    contract: contract,
-                    //name: name,
-                });
-            });
-    }
-
-    componentDidMount() {
-        this.getData();
     }
 
     onChangeFrom(e) {
@@ -63,8 +41,12 @@ class Merger extends Component {
         alert("TODO: approve")
     }
 
-    fusionar() {
-        const { contract, from, to, quantity } = this.state;
+    async fusionar() {
+        console.log(`cargando fusionador de la dirección ${this.props.address}`);
+        let contract = await blockchainAdapter.MergerContract(this.props.address);
+
+        const { from, to, quantity } = this.state;
+
         console.log(`fusionando ${from} x ${quantity} => ${to}`);
         contract.fusionar(from, to, quantity);
     }

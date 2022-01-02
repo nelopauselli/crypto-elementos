@@ -2,19 +2,47 @@ import { ethers } from 'ethers';
 
 class BlockchainAdapter {
     constructor() {
+        this.cache = {};
+
         const { ethereum } = window;
 
-        if (!ethereum) {
-            console.error('No encontramos billetera compatible. :(');
-            return;
-        }
+        let provider;
 
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        this.signer = provider.getSigner();
+        if (ethereum) {
+            provider = new ethers.providers.Web3Provider(ethereum)
+            this.signerOrProvider = provider.getSigner();
+        } else {
+            console.error('No encontramos billetera compatible. :(');
+            this.signerOrProvider = ethers.providers.JsonRpcProvider('http://vivo.local:7545');
+        }
     }
 
-    Contract(address, abi){
-        return new ethers.Contract(address, abi, this.signer)
+    Contract(address, abi) {
+        return new ethers.Contract(address, abi, this.signerOrProvider);
+    }
+
+    async ElementContract(address) {
+        return await this.GetContract(address, './json/elemento.json');
+    }
+
+    async MergerContract(address) {
+        return await this.GetContract(address, './json/fusionador.json');
+    }
+
+    async RewardContract(address) {
+        return await this.GetContract(address, './json/hidrogeno.json');
+    }
+
+    async GetContract(address, url) {
+        if (this.cache[address]) { return this.cache[address] };
+
+        let response = await fetch(url);
+        let abi = await response.json();
+        let contract = this.Contract(address, abi);
+
+        this.cache[address] = contract;
+
+        return contract;
     }
 }
 
