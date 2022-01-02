@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { ethers } from 'ethers';
 
-import Wallet from './Wallet';
+import WalletContext from './WalletContext';
+
 import Element from './Element';
 import Reward from './Reward';
 import Merger from './Merger';
@@ -16,12 +17,11 @@ class Dashboard extends Component {
 
         this.state = {
             message: 'Cargando...',
-            account: null,
             elements: [],
             rewards: [],
             mergers: []
         };
-        this.onWalletChange = this.onWalletChange.bind(this);
+
         this.onMerge = this.onMerge.bind(this);
     }
 
@@ -72,18 +72,12 @@ class Dashboard extends Component {
                         rewards[0] = settings.rewards;
 
                         this.setState({
-                            account: this.state.account,
                             elements: elementos,
                             rewards: rewards,
                             mergers: mergers
                         });
                     });
             });
-    }
-
-    onWalletChange(account) {
-        console.log(`Cuenta: ${account}`);
-        this.setState({ account: account });
     }
 
     onMerge(e) {
@@ -100,18 +94,14 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <Wallet onChange={this.onWalletChange}></Wallet>
-                </div>
-                <div className="Dashboard-body">
-                    {this.state.rewards.map(r => (<Reward key={r} address={r} account={this.state.account}></Reward>))}
-                    {this.state.elements.map(e => (<Element key={e} address={e} account={this.state.account}></Element>))}
-                    {this.state.mergers.map(m => (<Merger key={m} address={m} account={this.state.account} elements={this.state.elements}></Merger>))}
-                </div>
+            <div className="Dashboard-body">
+                {this.state.rewards.map(r => (<Reward key={r} address={r}></Reward>))}
+                {this.state.elements.map(e => (<Element key={e} address={e}></Element>))}
+                {this.state.mergers.map(m => (<Merger key={m} address={m} elements={this.state.elements}></Merger>))}
             </div>
         );
     }
 }
 
+Dashboard.contextType = WalletContext;
 export default Dashboard;

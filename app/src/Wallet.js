@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Address from './Address';
 
+import WalletContext from './WalletContext';
+
+import './Wallet.css';
+
 class Wallet extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +27,7 @@ class Wallet extends Component {
         console.log(`Encontramos ${accounts.length} direcciones`);
         if (accounts.length) {
             this.setState({ account: accounts[0] });
-            this.props.onChange(accounts[0]);
+            this.props.onChange(accounts[0])
         }
     }
 
@@ -32,11 +36,15 @@ class Wallet extends Component {
     }
 
     render() {
-        return (this.state.account
-            ? (<Address value={this.state.account}></Address>)
-            : (<button onClick={this.connect}>Conectar billetera</button>)
+        return (
+            <div className='Wallet-body'>
+                {this.state.account
+                    ? (<Address value={this.state.account}></Address>)
+                    : (<button onClick={this.connect}>Conectar billetera</button>)}
+            </div>
         );
     }
 }
 
+Wallet.contextType = WalletContext;
 export default Wallet;

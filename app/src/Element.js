@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { ethers } from 'ethers';
 
+import WalletContext from './WalletContext';
+
 import "./Element.css";
 import Address from './Address';
 
@@ -44,11 +46,18 @@ class Element extends Component {
                 });
 
                 localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
+
+                setTimeout(() => {
+                    this.reloadBalance();
+                }, 1000);
             });
     }
 
     async reloadBalance() {
-        if (!this.state.contract || !this.props.account) {
+        let wallet = this.context;
+        console.log(wallet);
+
+        if (!this.state.contract || !wallet) {
             this.setState({
                 balance: undefined
             });
@@ -58,8 +67,8 @@ class Element extends Component {
             return;
         }
 
-        console.log(`cargando balance de ${this.state.name} para ${this.props.account}`);
-        let balance = await this.state.contract.balanceOf(this.props.account);
+        console.log(`cargando balance de ${this.state.name} para ${wallet}`);
+        let balance = await this.state.contract.balanceOf(wallet);
         console.log(`Balance of ${this.state.name}: ${balance}`);
 
         this.setState({
@@ -73,9 +82,6 @@ class Element extends Component {
 
     componentDidMount() {
         this.getData();
-        setTimeout(() => {
-            this.reloadBalance();
-        }, 500);
     }
 
     async addToMetamask() {
@@ -143,4 +149,5 @@ class Element extends Component {
     }
 }
 
+Element.contextType = WalletContext;
 export default Element;

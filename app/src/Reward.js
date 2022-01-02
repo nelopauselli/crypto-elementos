@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { ethers } from 'ethers';
 
+import WalletContext from './WalletContext';
+
 import "./Reward.css";
 
 class Reward extends Component {
@@ -33,7 +35,7 @@ class Reward extends Component {
             .then(response => response.json())
             .then(async (abi) => {
                 const address = this.props.address;
-                console.log(`cargando elemento de la dirección ${address} para la cuenta ${this.props.account}`);
+                console.log(`cargando elemento de la dirección ${address}`);
                 let contract = new ethers.Contract(this.props.address, abi, signer);
 
                 let name = await contract.name();
@@ -49,7 +51,10 @@ class Reward extends Component {
     }
 
     async reloadBalance() {
-        if (!this.state.contract || !this.props.account) {
+        let wallet = this.context;
+        console.log(wallet);
+
+        if (!this.state.contract || !wallet) {
             this.setState({
                 balance: undefined
             });
@@ -59,7 +64,7 @@ class Reward extends Component {
             return;
         }
 
-        console.log(`cargando pendiente de ${this.state.name} para ${this.props.account}`);
+        console.log(`cargando pendiente de ${this.state.name} para ${wallet}`);
         let subscribed = await this.state.contract.subscribed();
         let pending = await this.state.contract.pendingReward();
         console.log(`Pending of ${this.state.name}: ${pending}`);
@@ -90,11 +95,11 @@ class Reward extends Component {
     }
 
     async getPendingReward() {
-        await this.state.contract.pendingReward(); //.call({ from: this.accountAddress }).then(value => this.pending(value));
+        await this.state.contract.pendingReward();
     }
 
     async claim() {
-        await this.state.contract.claim(); //.send({ from: this.accountAddress, gas: 470000, gasPrice: 0 });
+        await this.state.contract.claim();
     }
 
     render() {
@@ -116,4 +121,5 @@ class Reward extends Component {
     }
 }
 
+Reward.contextType = WalletContext;
 export default Reward;
