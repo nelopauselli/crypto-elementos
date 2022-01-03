@@ -36,10 +36,17 @@ class Merger extends Component {
         let from = await blockchainAdapter.ElementContract(elementAddr);
         let balance = await from.balanceOf(this.context);
         let allowance = await from.allowance(this.context, this.props.address);
-      
+
         let quantity = BigNumber.from(balance);
 
-        this.setState({ from: elementAddr, quantity: parseInt(balance), allowance: allowance.gte(quantity), allowanced: allowance.toString() });
+        this.setState({
+            from: elementAddr,
+            quantity: parseInt(balance),
+            allowance: allowance.gte(quantity),
+            allowanced: allowance.gte(blockchainAdapter.UINT_256_MAX)
+            ? 'mucho'
+            : allowance.toString()
+        });
     }
 
     async onQuantityChange(e) {
@@ -49,7 +56,13 @@ class Merger extends Component {
         let from = await blockchainAdapter.ElementContract(this.state.from);
         let allowance = await from.allowance(this.context, this.props.address);
 
-        this.setState({ quantity: quantity.toNumber(), allowance: allowance.gte(quantity), allowanced: allowance.toString() });
+        this.setState({
+            quantity: quantity.toNumber(),
+            allowance: allowance.gte(quantity),
+            allowanced: allowance.gte(blockchainAdapter.UINT_256_MAX)
+                ? 'mucho'
+                : allowance.toString()
+        });
     }
 
     onChangeTo(e) {
@@ -98,8 +111,8 @@ class Merger extends Component {
                         {
                             this.state.from ? (
                                 <div>
-                                <input className="Merger-quantity" value={this.state.quantity} onChange={this.onQuantityChange}></input>
-                                <div>M&aacute;ximo autorizado: {this.state.allowanced}</div>
+                                    <input className="Merger-quantity" value={this.state.quantity} onChange={this.onQuantityChange}></input>
+                                    <div>M&aacute;ximo autorizado: {this.state.allowanced}</div>
                                 </div>
                             ) : (<div></div>)
                         }
