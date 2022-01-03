@@ -33,7 +33,6 @@ class Reward extends Component {
     async reloadBalance() {
         let contract = await blockchainAdapter.RewardContract(this.props.address);
         let wallet = this.context;
-        console.log(wallet);
 
         if (!contract || !wallet) {
             this.setState({

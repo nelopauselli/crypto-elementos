@@ -30,6 +30,15 @@ class Wallet extends Component {
                 this.setState({ account: accounts[0] });
                 this.props.onChange(accounts[0])
             }
+
+            let self = this;
+            ethereum.on('accountsChanged', function (accounts) {
+                console.log(`Account change ${accounts.length}`);
+                if (accounts.length) {
+                    self.setState({ account: accounts[0] });
+                    self.props.onChange(accounts[0])
+                }
+            });
         } catch (ex) {
             this.setState({ account: null });
         }
