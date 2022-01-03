@@ -26,12 +26,42 @@ contract Fusionador is IFusionador, Ownable {
         Elemento elementoDestino = elementos[destino];
         //TODO: validar que el elemento de destino estaba en la lista
 
-        uint256 materia = elementoOrigen.desintegrar(msg.sender, cantidad);
-        materia = elementoDestino.integrar(msg.sender, materia);
+        require(
+            elementoOrigen.balanceOf(msg.sender) >= cantidad,
+            "Insuficiente cantidad del elemento"
+        );
 
-        if (materia > 0) {
+        uint256 materia = cantidad * elementoOrigen.masaAtomica();
+        uint256 cantidadDestino = materia / elementoDestino.masaAtomica();
+        uint256 balanceOfDestino = elementoDestino.balanceOf(address(this));
+
+        if (cantidadDestino < balanceOfDestino) {
+            //Si no tenemos suficiente materia destino, calculamos la cantidad posible de origen
+            cantidadDestino = balanceOfDestino;
+            materia = balanceOfDestino * elementoDestino.masaAtomica();
+            cantidad = materia / elementoOrigen.masaAtomica();
+
+            // y volvemos a calcular la materia destino
+            materia = cantidad * elementoOrigen.masaAtomica();
+            cantidadDestino = materia / elementoDestino.masaAtomica();
+        }
+
+        bool transferSuccess = elementoOrigen.transferFrom(
+            msg.sender,
+            address(this),
+            cantidad
+        );
+        require(
+            transferSuccess,
+            "no se pudo obtener el elemento a desintegrar"
+        );
+
+        elementoOrigen.desintegrar(cantidad);
+        IntegrarResult memory result = elementoDestino.integrar(cantidadDestino);
+        
+        if (result.materiaRestante > 0) {
             Hidrogeno base;
-            base.integrar(msg.sender, materia);
+            base.integrar(result.materiaRestante);
         }
     }
 }

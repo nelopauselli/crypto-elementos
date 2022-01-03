@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Root is Ownable {
+contract Cosmos is Ownable {
     address[] elementos;
     address[] claimables;
     address[] fusionadores;
