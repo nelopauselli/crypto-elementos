@@ -20,6 +20,7 @@ class ElementSelector extends Component {
     render() {
         return (
             <select className={this.props.className} onChange={e => this.props.onChange(e)}>
+                <option></option>
                 {this.state.elements.map(e => <option key={e.address} value={e.address}>{e.name}</option>)}
             </select>
         )

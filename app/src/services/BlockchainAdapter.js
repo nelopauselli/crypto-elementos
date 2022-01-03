@@ -1,7 +1,8 @@
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 
 class BlockchainAdapter {
     constructor() {
+        this.UINT_256_MAX = BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         this.cache = {};
 
         const { ethereum } = window;
