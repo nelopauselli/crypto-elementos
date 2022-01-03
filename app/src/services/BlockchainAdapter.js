@@ -34,7 +34,8 @@ class BlockchainAdapter {
     }
 
     async GetContract(address, url) {
-        if (this.cache[address]) { return this.cache[address] };
+        //FIXME: se mezclan en cache el contrato del hidrogeno como element y como reward
+        //if (this.cache[address]) { return this.cache[address] };
 
         let response = await fetch(url);
         let abi = await response.json();

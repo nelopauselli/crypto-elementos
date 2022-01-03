@@ -28,6 +28,8 @@ class Reward extends Component {
             name: name,
             symbol: symbol
         });
+
+        this.reloadBalance();
     }
 
     async reloadBalance() {
@@ -65,9 +67,6 @@ class Reward extends Component {
 
     componentDidMount() {
         this.getData();
-        setTimeout(() => {
-            this.reloadBalance();
-        }, 500);
     }
 
     async subscribe() {
