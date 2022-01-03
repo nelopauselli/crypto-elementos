@@ -10,14 +10,9 @@ const Fusionador = artifacts.require("Fusionador");
 module.exports = async (deployer) => {
   let materia = await Materia.deployed();
 
-  let carbono = await deployer.deploy(Carbono);
-  await carbono.setMateria(materia.address, { gas: 2000000 });
-
-  let oxigeno = await deployer.deploy(Oxigeno);
-  await oxigeno.setMateria(materia.address, { gas: 2000000 });
-
-  let nitrogeno = await deployer.deploy(Nitrogeno);
-  await nitrogeno.setMateria(materia.address, { gas: 2000000 });
+  await deployer.deploy(Carbono, materia.address);
+  await deployer.deploy(Oxigeno, materia.address);
+  await deployer.deploy(Nitrogeno, materia.address);
 
   let fusionador = await Fusionador.deployed();
   await fusionador.add(Carbono.address, { gas: 2000000 });

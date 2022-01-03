@@ -57,11 +57,11 @@ contract Fusionador is IFusionador, Ownable {
         );
 
         elementoOrigen.desintegrar(cantidad);
-        IntegrarResult memory result = elementoDestino.integrar(cantidadDestino);
+        elementoDestino.integrar(cantidadDestino);
         
-        if (result.materiaRestante > 0) {
-            Hidrogeno base;
-            base.integrar(result.materiaRestante);
-        }
+        // if (result.materiaRestante > 0) {
+        //     Hidrogeno base;
+        //     base.integrar(result.materiaRestante);
+        // }
     }
 }

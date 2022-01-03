@@ -4,6 +4,6 @@ pragma solidity ^0.8.0;
 import "./Elemento.sol";
 
 contract Helio is Elemento {
-    constructor () Elemento("Helio", "He", 4) {
+    constructor (address materiaAddress) Elemento("Helio", "He", 4, materiaAddress) {
     }
 }

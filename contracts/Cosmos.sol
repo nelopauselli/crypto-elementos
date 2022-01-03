@@ -2,19 +2,27 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Elemento.sol";
+import "./Materia.sol";
+
+uint256 constant UINT_256_MAX = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
 
 contract Cosmos is Ownable {
     address[] elementos;
-    address[] claimables;
     address[] fusionadores;
+
+    address materiaAddress;
+    address rewardElementAddress;
+
+    uint256 initialReward;
+    mapping(address => uint256) subscriptors;
+
+    constructor() {
+        initialReward = 1000;
+    }
 
     function registrarElemento(address elemento) public payable onlyOwner {
         elementos.push(elemento);
-    }
-
-    function registrarElementoClaimable(address elemento) public payable onlyOwner {
-        registrarElemento(elemento);
-        claimables.push(elemento);
     }
 
     function quitarElemento(uint256 index) public payable onlyOwner {
@@ -24,8 +32,6 @@ contract Cosmos is Ownable {
             elementos[i] = elementos[i + 1];
         }
         delete elementos[elementos.length - 1];
-
-        //TODO: ¿y de claimables?
     }
 
     function contarElementos() public view returns (uint256) {
@@ -37,20 +43,7 @@ contract Cosmos is Ownable {
         return elementos[index];
     }
 
-      function contarElementosClaimables() public view returns (uint256) {
-        return claimables.length;
-    }
-
-    function obtenerElementoClaimable(uint256 index) public view returns (address) {
-        require(index < claimables.length, "Index out of range");
-        return claimables[index];
-    }
-
-    function registrarFusionador(address fusionador)
-        public
-        payable
-        onlyOwner
-    {
+    function registrarFusionador(address fusionador) public payable onlyOwner {
         fusionadores.push(fusionador);
     }
 
@@ -67,12 +60,58 @@ contract Cosmos is Ownable {
         return fusionadores.length;
     }
 
-    function obtenerFusionador(uint256 index)
-        public
-        view
-        returns (address)
-    {
+    function obtenerFusionador(uint256 index) public view returns (address) {
         require(index < fusionadores.length, "Index out of range");
         return fusionadores[index];
+    }
+
+    function registrarMateria(address addr) public payable onlyOwner {
+        require(
+            materiaAddress == address(0),
+            "El elemento para la recompensas ya fue establecido"
+        );
+        materiaAddress = addr;
+    }
+
+    function registrarElementoParaRecompensas(address elemento)
+        public
+        payable
+        onlyOwner
+    {
+        require(
+            rewardElementAddress == address(0),
+            "El elemento para la recompensas ya fue establecido"
+        );
+        require(materiaAddress != address(0), "materia desconocida");
+
+        rewardElementAddress = elemento;
+
+        Materia materia = Materia(materiaAddress);
+        materia.approve(rewardElementAddress, UINT_256_MAX);
+    }
+
+    function obtenerElementoClaimable() public view returns (address) {
+        require(
+            rewardElementAddress != address(0),
+            "No esta configurado el elemento de las recompensas"
+        );
+        return rewardElementAddress;
+    }
+
+    function claim() public payable {
+        uint256 reward = pendingReward();
+
+        Elemento elementToClaim = Elemento(rewardElementAddress);
+        elementToClaim.integrar(reward);
+
+        subscriptors[msg.sender] = block.number;
+    }
+
+    function pendingReward() public view returns (uint256) {
+        if (subscriptors[msg.sender] == 0) return initialReward;
+
+        uint256 diff = block.number - subscriptors[msg.sender];
+        uint256 reward = diff * 1000;
+        return reward;
     }
 }

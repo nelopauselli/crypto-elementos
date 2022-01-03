@@ -15,18 +15,17 @@ module.exports = async (deployer) => {
   await deployer.deploy(Cosmos);
   await deployer.deploy(Materia, Cosmos.address);
 
-  let hidrogeno = await deployer.deploy(Hidrogeno);
-  hidrogeno.setMateria(Materia.address);
+  await deployer.deploy(Hidrogeno, Materia.address);
+  await deployer.deploy(Helio, Materia.address);
 
-  let helio = await deployer.deploy(Helio);
-  helio.setMateria(Materia.address);
-  
   let fusionador = await deployer.deploy(Fusionador);
   await fusionador.add(Hidrogeno.address, { gas: 2000000 });
   await fusionador.add(Helio.address, { gas: 2000000 });
 
   let cosmosDeployed = await Cosmos.deployed();
-  await cosmosDeployed.registrarElementoClaimable(Hidrogeno.address, { gas: 2000000 });
+  await cosmosDeployed.registrarElemento(Hidrogeno.address, { gas: 2000000 });
+  await cosmosDeployed.registrarMateria(Materia.address, { gas: 2000000 });
+  await cosmosDeployed.registrarElementoParaRecompensas(Hidrogeno.address, { gas: 2000000 });
   await cosmosDeployed.registrarElemento(Helio.address, { gas: 2000000 });
   await cosmosDeployed.registrarFusionador(Fusionador.address, { gas: 2000000 });
 
