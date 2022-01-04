@@ -1,5 +1,10 @@
 import { ethers, BigNumber } from 'ethers';
 
+import settings from './../abis/settings.json';
+import cosmosAbi from './../abis/cosmos.json';
+import elementoAbi from './../abis/elemento.json';
+import fusionadorAbi from './../abis/fusionador.json';
+
 class BlockchainAdapter {
     constructor() {
         this.UINT_256_MAX = BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -18,30 +23,23 @@ class BlockchainAdapter {
         }
     }
 
-    Contract(address, abi) {
-        return new ethers.Contract(address, abi, this.signerOrProvider);
+    async CosmosContract(){
+        return await this.GetContract(settings.root, cosmosAbi);
     }
 
     async ElementContract(address) {
-        return await this.GetContract(address, './json/elemento.json');
+        return await this.GetContract(address, elementoAbi);
     }
 
     async MergerContract(address) {
-        return await this.GetContract(address, './json/fusionador.json');
+        return await this.GetContract(address, fusionadorAbi);
     }
 
-    async RewardContract(address) {
-        return await this.GetContract(address, './json/hidrogeno.json');
-    }
-
-    async GetContract(address, url) {
+    async GetContract(address, abi) {
         //FIXME: se mezclan en cache el contrato del hidrogeno como element y como reward
         //if (this.cache[address]) { return this.cache[address] };
 
-        let response = await fetch(url);
-        let abi = await response.json();
-        let contract = this.Contract(address, abi);
-
+        let contract = new ethers.Contract(address, abi, this.signerOrProvider);
         this.cache[address] = contract;
 
         return contract;

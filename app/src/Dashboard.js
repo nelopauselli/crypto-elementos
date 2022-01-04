@@ -26,48 +26,34 @@ class Dashboard extends Component {
     }
 
     async getData() {
-        fetch('./json/settings.json')
-            .then(response => response.json())
-            .then(settings => {
-                fetch('./json/root.json')
-                    .then(response => response.json())
-                    .then(async (abi) => {
-                        console.log(abi);
+        let cosmos = await blockchainAdapter.CosmosContract();
 
-                        let root = blockchainAdapter.Contract(settings.root, abi);
+        let elementosSize = await cosmos.contarElementos();
+        console.log("hay " + elementosSize + " elementos registrados");
+        let elementosLength = parseInt(elementosSize);
 
-                        let elementosSize = await root.contarElementos();
-                        console.log("hay " + elementosSize + " elementos registrados");
-                        let elementosLength = parseInt(elementosSize);
+        let elementos = Array(elementosLength);
+        for (let index = 0; index < elementosLength; index++) {
+            let elementAddress = await cosmos.obtenerElemento(index);
+            console.log('Elemento: ', elementAddress);
+            elementos[index] = elementAddress;
+        }
 
-                        let elementos = Array(elementosLength);
-                        for (let index = 0; index < elementosLength; index++) {
-                            let elementAddress = await root.obtenerElemento(index);
-                            console.log('Elemento: ', elementAddress);
-                            elementos[index] = elementAddress;
-                        }
+        let fusionadoresSize = await cosmos.contarFusionadores();
+        console.log("hay " + fusionadoresSize + " fusionadores registrados");
+        let fusionadoresLength = parseInt(fusionadoresSize);
 
-                        let fusionadoresSize = await root.contarFusionadores();
-                        console.log("hay " + fusionadoresSize + " fusionadores registrados");
-                        let fusionadoresLength = parseInt(fusionadoresSize);
+        let mergers = Array(fusionadoresLength);
+        for (let index = 0; index < fusionadoresLength; index++) {
+            let mergerAddress = await cosmos.obtenerFusionador(index);
+            console.log('Fusionador: ', mergerAddress);
+            mergers[index] = mergerAddress;
+        }
 
-                        let mergers = Array(fusionadoresLength);
-                        for (let index = 0; index < fusionadoresLength; index++) {
-                            let mergerAddress = await root.obtenerFusionador(index);
-                            console.log('Fusionador: ', mergerAddress);
-                            mergers[index] = mergerAddress;
-                        }
-
-                        let rewards = Array(1);
-                        rewards[0] = settings.rewards;
-
-                        this.setState({
-                            elements: elementos,
-                            rewards: rewards,
-                            mergers: mergers
-                        });
-                    });
-            });
+        this.setState({
+            elements: elementos,
+            mergers: mergers
+        });
     }
 
     onMerge(e) {
@@ -85,7 +71,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div className="Dashboard-body">
-                {this.state.rewards.map(r => (<Reward key={r} address={r}></Reward>))}
+                <Reward></Reward>
                 {this.state.elements.map(e => (<Element key={e} address={e}></Element>))}
                 {this.state.mergers.map(m => (<Merger key={m} address={m} elements={this.state.elements}></Merger>))}
             </div>

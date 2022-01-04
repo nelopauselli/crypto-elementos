@@ -10,58 +10,54 @@ class Reward extends Component {
         super(props);
 
         this.state = {
+            address: null,
             name: null,
             symbol: null,
-            subscribed: null,
-            pending: null,
-            description: null
+            pending: null
         }
     }
 
     async getData() {
-        let contract = await blockchainAdapter.RewardContract(this.props.address);
+        let cosmos = await blockchainAdapter.CosmosContract();
+        let elementAddr = await cosmos.obtenerElementoClaimable();
+        let element = await blockchainAdapter.ElementContract(elementAddr);
 
-        let name = await contract.name();
-        let symbol = await contract.symbol();
+        let name = await element.name();
+        let symbol = await element.symbol();
 
         this.setState({
             name: name,
             symbol: symbol
         });
 
-        this.reloadBalance();
+        this.reloadPending();
     }
 
-    async reloadBalance() {
-        let contract = await blockchainAdapter.RewardContract(this.props.address);
+    async reloadPending() {
+        let cosmos = await blockchainAdapter.CosmosContract();
         let wallet = this.context;
 
-        if (!contract || !wallet) {
+        if (!cosmos || !wallet) {
             this.setState({
-                balance: undefined
+                pending: null
             });
             setTimeout(() => {
-                this.reloadBalance();
+                this.reloadPending();
             }, 1000);
             return;
         }
 
         console.log(`cargando pendiente de ${this.state.name} para ${wallet}`);
-        let subscribed = await contract.subscribed();
-        let pending = await contract.pendingReward();
+
+        let pending = await cosmos.pendingReward();
         console.log(`Pending of ${this.state.name}: ${pending}`);
-        let description = subscribed
-            ? `Usted tiene ${pending} ${this.state.symbol} pendientes de reclamar`
-            : `Usted no está subscripto a este generador de ${this.state.symbol}`;
 
         this.setState({
-            subscribed: subscribed,
             pending: parseInt(pending),
-            description: description
         });
 
         setTimeout(() => {
-            this.reloadBalance();
+            this.reloadPending();
         }, 5000);
     }
 
@@ -74,23 +70,23 @@ class Reward extends Component {
     }
 
     async getPendingReward() {
-        let contract = await blockchainAdapter.RewardContract(this.props.address);
+        let contract = await blockchainAdapter.CosmosContract();
         await contract.pendingReward();
     }
 
     async claim() {
-        let contract = await blockchainAdapter.RewardContract(this.props.address);
+        let contract = await blockchainAdapter.CosmosContract();
         await contract.claim();
     }
 
     render() {
         const reward = this.state;
-        return reward ? (
+        return reward && reward.symbol ? (
             <div className="Reward-card">
                 <img className="Reward-icon" src="/logo192.png" alt="..." />
                 <div className="Reward-body">
                     <h3>{reward.name}</h3>
-                    <p>{reward.description}</p>
+                    <p>Usted tiene {reward.pending} {reward.symbol} pendientes de reclamar</p>
                 </div>
                 <div className="Reward-footer">
                     <button className="Reward-button" onClick={() => this.claim()}>
