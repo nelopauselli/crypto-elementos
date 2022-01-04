@@ -23,15 +23,6 @@ contract Cosmos is Ownable {
         elementos.push(elemento);
     }
 
-    function quitarElemento(uint256 index) public payable onlyOwner {
-        if (index >= elementos.length) return;
-
-        for (uint256 i = index; i < elementos.length - 1; i++) {
-            elementos[i] = elementos[i + 1];
-        }
-        delete elementos[elementos.length - 1];
-    }
-
     function contarElementos() public view returns (uint256) {
         return elementos.length;
     }
@@ -43,15 +34,6 @@ contract Cosmos is Ownable {
 
     function registrarFusionador(address fusionador) public payable onlyOwner {
         fusionadores.push(fusionador);
-    }
-
-    function quitarFusionador(uint256 index) public payable onlyOwner {
-        if (index >= fusionadores.length) return;
-
-        for (uint256 i = index; i < fusionadores.length - 1; i++) {
-            fusionadores[i] = fusionadores[i + 1];
-        }
-        delete fusionadores[fusionadores.length - 1];
     }
 
     function contarFusionadores() public view returns (uint256) {
