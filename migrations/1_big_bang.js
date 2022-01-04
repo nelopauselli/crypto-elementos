@@ -22,21 +22,17 @@ module.exports = async (deployer) => {
   await fusionador.add(Hidrogeno.address, { gas: 2000000 });
   await fusionador.add(Helio.address, { gas: 2000000 });
 
-  let cosmosDeployed = await Cosmos.deployed();
-  await cosmosDeployed.registrarElemento(Hidrogeno.address, { gas: 2000000 });
-  await cosmosDeployed.registrarMateria(Materia.address, { gas: 2000000 });
-  await cosmosDeployed.registrarElementoParaRecompensas(Hidrogeno.address, { gas: 2000000 });
-  await cosmosDeployed.registrarElemento(Helio.address, { gas: 2000000 });
-  await cosmosDeployed.registrarFusionador(Fusionador.address, { gas: 2000000 });
+  let cosmos = await Cosmos.deployed();
+  await cosmos.registrarElemento(Hidrogeno.address, { gas: 2000000 });
+  await cosmos.registrarMateria(Materia.address, { gas: 2000000 });
+  await cosmos.registrarElementoParaRecompensas(Hidrogeno.address, { gas: 2000000 });
+  await cosmos.registrarElemento(Helio.address, { gas: 2000000 });
+  await cosmos.registrarFusionador(Fusionador.address, { gas: 2000000 });
 
-  /*
-  let settingsPath = path.join(__dirname, './../app/json/settings.json');
-  fs.writeFileSync(settingsPath, `{"root":"${Cosmos.address}", "rewards":"${Hidrogeno.address}"}`);
+  let settingsPath = path.join(__dirname, './../app/src/abis/settings.json');
+  fs.writeFileSync(settingsPath, `{"root":"${Cosmos.address}"}`);
 
-  fs.writeFileSync(path.join(__dirname, './../app/json/root.json'), JSON.stringify(Root.abi)); 
-  fs.writeFileSync(path.join(__dirname, './../app/json/elemento.json'), JSON.stringify(Elemento.abi)); 
-  fs.writeFileSync(path.join(__dirname, './../app/json/fusionador.json'), JSON.stringify(Fusionador.abi)); 
-  fs.writeFileSync(path.join(__dirname, './../app/json/hidrogeno.json'), JSON.stringify(Hidrogeno.abi)); 
-  */
-
+  fs.writeFileSync(path.join(__dirname, './../app/src/abis/cosmos.json'), JSON.stringify(Cosmos.abi));
+  fs.writeFileSync(path.join(__dirname, './../app/src/abis/elemento.json'), JSON.stringify(Elemento.abi));
+  fs.writeFileSync(path.join(__dirname, './../app/src/abis/fusionador.json'), JSON.stringify(Fusionador.abi));
 };
