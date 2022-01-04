@@ -8,7 +8,8 @@ contract Elemento is ERC20 {
     uint8 _masaAtomica;
     address _materiaAddress;
 
-    event Integracion(address indexed from, address indexed to, uint256 value);
+    event Desintegracion(address indexed from, address indexed to, string symbol, uint256 unidades, uint256 result);
+    event Integracion(address indexed from, address indexed to, string symbol, uint256 unidades, uint256 result);
 
     constructor(
         string memory name,
@@ -37,33 +38,31 @@ contract Elemento is ERC20 {
 
         Materia materia = Materia(_materiaAddress);
         materia.transfer(msg.sender, materiaUnidades);
+
+        emit Desintegracion(msg.sender, msg.sender, symbol(), unidades, materiaUnidades);
     }
 
-    function integrar(uint256 unidades)
-        public
-        payable
-        virtual
-    {
+    function integrar(uint256 unidades) public payable virtual {
         Materia materia = Materia(_materiaAddress);
 
         uint256 materiaUnidades = unidades * _masaAtomica;
         require(
-            materia.balanceOf(msg.sender) > materiaUnidades,
-            "No tiene suficiente materia"
+            materia.balanceOf(msg.sender) >= materiaUnidades,
+            "No tiene suficiente materia para integrar"
         );
 
         if (!materia.transferFrom(msg.sender, address(this), materiaUnidades))
             require(false, "no se pudo obtener la materia a integrar");
 
-        uint256 resultante = unidades / _masaAtomica;
+        uint256 resultante = unidades;
         if (resultante > 0) _mint(tx.origin, resultante);
 
         // si quedan restos de materia, se los devolvemos
-        uint256 delta = unidades - resultante * _masaAtomica;
-        if (delta > 0) {
-            materia.transfer(msg.sender, delta);
-        }
+        // uint256 delta = unidades - resultante * _masaAtomica;
+        // if (delta > 0) {
+        //     materia.transfer(msg.sender, delta);
+        // }
 
-        emit Integracion(msg.sender, tx.origin, resultante);
+        emit Integracion(msg.sender, tx.origin, symbol(), unidades, resultante);
     }
 }

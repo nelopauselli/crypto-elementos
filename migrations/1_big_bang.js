@@ -18,7 +18,7 @@ module.exports = async (deployer) => {
   await deployer.deploy(Hidrogeno, Materia.address);
   await deployer.deploy(Helio, Materia.address);
 
-  let fusionador = await deployer.deploy(Fusionador);
+  let fusionador = await deployer.deploy(Fusionador, Materia.address);
   await fusionador.add(Hidrogeno.address, { gas: 2000000 });
   await fusionador.add(Helio.address, { gas: 2000000 });
 

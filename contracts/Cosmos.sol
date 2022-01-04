@@ -5,8 +5,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Elemento.sol";
 import "./Materia.sol";
 
-uint256 constant UINT_256_MAX = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
-
 contract Cosmos is Ownable {
     address[] elementos;
     address[] fusionadores;

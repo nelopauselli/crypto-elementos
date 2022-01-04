@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+uint256 constant UINT_256_MAX = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+
 contract Materia is ERC20 {
     constructor(address cosmos) ERC20("Materia", "MAT") {
         uint256 MAX_UINT = 2**256 - 1;
