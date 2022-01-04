@@ -43,7 +43,7 @@ class Merger extends Component {
             from: elementAddr,
             quantity: parseInt(balance),
             allowance: allowance.gte(quantity),
-            allowanced: allowance.gte(blockchainAdapter.UINT_256_MAX)
+            allowanced: allowance.gte(blockchainAdapter.UINT_256_AVG)
             ? 'mucho'
             : allowance.toString()
         });
@@ -59,7 +59,7 @@ class Merger extends Component {
         this.setState({
             quantity: quantity.toNumber(),
             allowance: allowance.gte(quantity),
-            allowanced: allowance.gte(blockchainAdapter.UINT_256_MAX)
+            allowanced: allowance.gte(blockchainAdapter.UINT_256_AVG)
                 ? 'mucho'
                 : allowance.toString()
         });

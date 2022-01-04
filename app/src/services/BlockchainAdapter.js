@@ -8,6 +8,7 @@ import fusionadorAbi from './../abis/fusionador.json';
 class BlockchainAdapter {
     constructor() {
         this.UINT_256_MAX = BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        this.UINT_256_AVG = BigNumber.from("0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff");
         this.cache = {};
 
         const { ethereum } = window;
@@ -36,8 +37,7 @@ class BlockchainAdapter {
     }
 
     async GetContract(address, abi) {
-        //FIXME: se mezclan en cache el contrato del hidrogeno como element y como reward
-        //if (this.cache[address]) { return this.cache[address] };
+        if (this.cache[address]) { return this.cache[address] };
 
         let contract = new ethers.Contract(address, abi, this.signerOrProvider);
         this.cache[address] = contract;
