@@ -29,10 +29,10 @@ module.exports = async (deployer) => {
   await cosmos.registrarElemento(Helio.address, { gas: 2000000 });
   await cosmos.registrarFusionador(Fusionador.address, { gas: 2000000 });
 
-  let settingsPath = path.join(__dirname, './../app/src/abis/settings.json');
+  let settingsPath = path.join(__dirname, './../../app/src/abis/settings.json');
   fs.writeFileSync(settingsPath, `{"root":"${Cosmos.address}"}`);
 
-  fs.writeFileSync(path.join(__dirname, './../app/src/abis/cosmos.json'), JSON.stringify(Cosmos.abi));
-  fs.writeFileSync(path.join(__dirname, './../app/src/abis/elemento.json'), JSON.stringify(Elemento.abi));
-  fs.writeFileSync(path.join(__dirname, './../app/src/abis/fusionador.json'), JSON.stringify(Fusionador.abi));
+  fs.writeFileSync(path.join(__dirname, './../../app/src/abis/cosmos.json'), JSON.stringify(Cosmos.abi));
+  fs.writeFileSync(path.join(__dirname, './../../app/src/abis/elemento.json'), JSON.stringify(Elemento.abi));
+  fs.writeFileSync(path.join(__dirname, './../../app/src/abis/fusionador.json'), JSON.stringify(Fusionador.abi));
 };
