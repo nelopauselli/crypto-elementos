@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import WalletContext from './WalletContext';
 import blockchainAdapter from './services/BlockchainAdapter';
@@ -9,74 +9,48 @@ import Merger from './Merger';
 
 import './Dashboard.css';
 
-class Dashboard extends Component {
-    constructor(props) {
-        super(props);
+function Dashboard() {
+    const [elements, setElements] = useState([]);
+    const [mergers, setMergers] = useState([]);
 
-        //localStorage.clear();
+    useEffect(() => {
+        async function fetchData() {
+            let cosmos = await blockchainAdapter.CosmosContract();
 
-        this.state = {
-            message: 'Cargando...',
-            elements: [],
-            rewards: [],
-            mergers: []
-        };
+            let elementosSize = await cosmos.contarElementos();
+            console.log("hay " + elementosSize + " elementos registrados");
+            let elementosLength = parseInt(elementosSize);
 
-        this.onMerge = this.onMerge.bind(this);
-    }
+            let elementos = Array(elementosLength);
+            for (let index = 0; index < elementosLength; index++) {
+                let elementAddress = await cosmos.obtenerElemento(index);
+                console.log('Elemento: ', elementAddress);
+                elementos[index] = elementAddress;
+            }
+            setElements(elementos);
 
-    async getData() {
-        let cosmos = await blockchainAdapter.CosmosContract();
+            let fusionadoresSize = await cosmos.contarFusionadores();
+            console.log("hay " + fusionadoresSize + " fusionadores registrados");
+            let fusionadoresLength = parseInt(fusionadoresSize);
 
-        let elementosSize = await cosmos.contarElementos();
-        console.log("hay " + elementosSize + " elementos registrados");
-        let elementosLength = parseInt(elementosSize);
-
-        let elementos = Array(elementosLength);
-        for (let index = 0; index < elementosLength; index++) {
-            let elementAddress = await cosmos.obtenerElemento(index);
-            console.log('Elemento: ', elementAddress);
-            elementos[index] = elementAddress;
+            let mergers = Array(fusionadoresLength);
+            for (let index = 0; index < fusionadoresLength; index++) {
+                let mergerAddress = await cosmos.obtenerFusionador(index);
+                console.log('Fusionador: ', mergerAddress);
+                mergers[index] = mergerAddress;
+            }
+            setMergers(mergers);
         }
+        fetchData();
+    });
 
-        let fusionadoresSize = await cosmos.contarFusionadores();
-        console.log("hay " + fusionadoresSize + " fusionadores registrados");
-        let fusionadoresLength = parseInt(fusionadoresSize);
-
-        let mergers = Array(fusionadoresLength);
-        for (let index = 0; index < fusionadoresLength; index++) {
-            let mergerAddress = await cosmos.obtenerFusionador(index);
-            console.log('Fusionador: ', mergerAddress);
-            mergers[index] = mergerAddress;
-        }
-
-        this.setState({
-            elements: elementos,
-            mergers: mergers
-        });
-    }
-
-    onMerge(e) {
-        console.log("onMerge");
-        this.setState({
-            mergeFrom: e.address,
-            mergeBalance: e.balance
-        });
-    }
-
-    componentDidMount() {
-        this.getData()
-    }
-
-    render() {
-        return (
-            <div className="Dashboard-body">
-                <Reward></Reward>
-                {this.state.elements.map(e => (<Element key={e} address={e}></Element>))}
-                {this.state.mergers.map(m => (<Merger key={m} address={m} elements={this.state.elements}></Merger>))}
-            </div>
-        );
-    }
+    return (
+        <div className="Dashboard-body">
+            <Reward></Reward>
+            {elements.map(e => (<Element key={e} address={e}></Element>))}
+            {mergers.map(m => (<Merger key={m} address={m} elements={elements}></Merger>))}
+        </div>
+    );
 }
 
 Dashboard.contextType = WalletContext;
