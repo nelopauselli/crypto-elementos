@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import blockchainAdapter from './services/BlockchainAdapter';
 
 import WalletContext from './WalletContext';
@@ -6,71 +6,37 @@ import WalletContext from './WalletContext';
 import "./Element.css";
 import Address from './Address';
 
-class Element extends Component {
-    constructor(props) {
-        super(props);
+function Element(props) {
+    const [address] = useState(props.address);
+    const [name, setName] = useState('...');
+    const [symbol, setSymbol] = useState(null);
+    const [balance, setBalance] = useState(null);
+    const [description, setDescription] = useState(null);
+    const wallet = useContext(WalletContext);
 
-        this.state = {
-            contract: null,
-            name: "...",
-            symbol: null,
-            balance: null
-        }
-    }
-
-    async getData() {
-        const { address } = this.props;
-        console.log(`cargando elemento de la dirección ${address}`);
-        
-        let contract = await blockchainAdapter.ElementContract(this.props.address);
-
-        let name = await contract.name();
-        let symbol = await contract.symbol();
-
-        this.setState({
-            name: name,
-            symbol: symbol,
-        });
-
-        localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
-
-        setTimeout(() => {
-            this.reloadBalance();
-        }, 1000);
-    }
-
-    async reloadBalance() {
-        let contract = await blockchainAdapter.ElementContract(this.props.address);
-        let wallet = this.context;
-        
+    const reloadBalance = useCallback(async () => {
+        let contract = await blockchainAdapter.ElementContract(address);
         if (!contract || !wallet) {
-            this.setState({
-                balance: undefined
-            });
+            setBalance(null);
             setTimeout(() => {
-                this.reloadBalance();
+                reloadBalance();
             }, 1000);
             return;
         }
 
-        console.log(`cargando balance de ${this.state.name} para ${wallet}`);
-        let balance = await contract.balanceOf(wallet);
-        console.log(`Balance of ${this.state.name}: ${balance}`);
+        console.log(`cargando balance de ${name} para ${wallet}`);
+        let value = parseInt(await contract.balanceOf(wallet));
+        console.log(`Balance of ${name}: ${value}`);
 
-        this.setState({
-            balance: parseInt(balance)
-        });
+        if (value !== balance)
+            setBalance(value);
 
         setTimeout(() => {
-            this.reloadBalance();
+            reloadBalance();
         }, 30000);
-    }
+    }, [address, balance, name, wallet]);
 
-    componentDidMount() {
-        this.getData();
-    }
-
-    async addToMetamask() {
+    const addToMetamask = async () => {
         const { ethereum } = window;
 
         if (!ethereum) {
@@ -78,12 +44,10 @@ class Element extends Component {
             return;
         }
 
-        const element = this.state;
+        console.log(`agregando token ${symbol} a metamask`);
 
-        console.log(`agregando token ${element.symbol} a metamask`);
-
-        const tokenAddress = element.address;
-        const tokenSymbol = element.symbol;
+        const tokenAddress = address;
+        const tokenSymbol = symbol;
         const tokenDecimals = 0;
         const tokenImage = 'https://cryptoelementos.web.app/img/atom.png';
 
@@ -110,30 +74,47 @@ class Element extends Component {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    render() {
-        const element = this.state;
-        return element ? (
-            <div className="Element-card">
-                <img className="Element-icon" src="/logo192.png" alt="..." />
-                <div className="Element-body">
-                    <h3>
-                        <div>
-                            {element.name}
-                            <img className="Element-addToMetamask" onClick={this.addToMetamask} src="img/metamask.svg" alt="Agregar a Metamask" title="Agregar a Metamask" />
-                        </div>
-                        <div>
-                            <Address value={this.props.address}></Address>
-                        </div>
-                    </h3>
-                    <div>{element.balance} {element.symbol}</div>
-                    <p>{element.description}</p>
-                </div>
+    useEffect(() => {
+        async function fetchData() {
+            console.log(`cargando elemento de la dirección ${address}`);
+
+            let contract = await blockchainAdapter.ElementContract(address);
+
+            let name = await contract.name();
+            let symbol = await contract.symbol();
+
+            setName(name);
+            setSymbol(symbol);
+
+            localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
+
+            setTimeout(() => {
+                reloadBalance();
+            }, 1000);
+        };
+        fetchData();
+    }, [address, reloadBalance])
+
+    return (
+        <div className="Element-card">
+            <img className="Element-icon" src="/logo192.png" alt="..." />
+            <div className="Element-body">
+                <h3>
+                    <div>
+                        {name}
+                        <img className="Element-addToMetamask" onClick={addToMetamask} src="img/metamask.svg" alt="Agregar a Metamask" title="Agregar a Metamask" />
+                    </div>
+                    <div>
+                        <Address value={address}></Address>
+                    </div>
+                </h3>
+                <div>{balance} {symbol}</div>
+                <p>{description}</p>
             </div>
-        ) : (<div></div>);
-    }
+        </div>
+    );
 }
 
-Element.contextType = WalletContext;
 export default Element;

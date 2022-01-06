@@ -2,13 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Address from './Address';
 
-it('text', () => {
-  const content = document.createElement('div');
-  ReactDOM.render(<Address value="0x012345679801234567980123456789" />, content);
+it('create component', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Address value="0x012345679801234567980123456789" />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});
 
-  console.log(content.textContent);
+it('text', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Address value="0x012345679801234567980123456789" />, div);
 
   const expected = '0x0123...56789';
   
-  expect(content.textContent).toBe(expected);
+  expect(div.textContent).toBe(expected);
+  ReactDOM.unmountComponentAtNode(div);
 });
