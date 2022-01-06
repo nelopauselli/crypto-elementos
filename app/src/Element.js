@@ -16,13 +16,7 @@ function Element(props) {
 
     const reloadBalance = useCallback(async () => {
         let contract = await blockchainAdapter.ElementContract(address);
-        if (!contract || !wallet) {
-            setBalance(null);
-            setTimeout(() => {
-                reloadBalance();
-            }, 1000);
-            return;
-        }
+        if (!contract || !wallet) return;
 
         console.log(`cargando balance de ${name} para ${wallet}`);
         let value = parseInt(await contract.balanceOf(wallet));
@@ -30,10 +24,6 @@ function Element(props) {
 
         if (value !== balance)
             setBalance(value);
-
-        setTimeout(() => {
-            reloadBalance();
-        }, 30000);
     }, [address, balance, name, wallet]);
 
     const addToMetamask = async () => {
@@ -89,12 +79,13 @@ function Element(props) {
             setSymbol(symbol);
 
             localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
-
-            setTimeout(() => {
-                reloadBalance();
-            }, 1000);
         };
         fetchData();
+
+        const timerId = setInterval(reloadBalance, 5000);
+        return () => {
+            clearInterval(timerId);
+        }
     }, [address, reloadBalance])
 
     return (

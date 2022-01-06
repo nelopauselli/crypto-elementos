@@ -1,102 +1,65 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState, useContext, useCallback } from 'react'
 import blockchainAdapter from './services/BlockchainAdapter';
 
 import WalletContext from './WalletContext';
 
 import "./Reward.css";
 
-class Reward extends Component {
-    constructor(props) {
-        super(props);
+function Reward(props) {
+    const [name, setName] = useState('...');
+    const [symbol, setSymbol] = useState(null);
+    const [pending, setPending] = useState(null);
+    const wallet = useContext(WalletContext);
 
-        this.state = {
-            address: null,
-            name: null,
-            symbol: null,
-            pending: null
+    const reloadPending = useCallback(async () => {
+        let cosmos = await blockchainAdapter.CosmosContract();
+        if (!cosmos || !wallet) return;
+
+        console.log(`cargando pendiente de ${name} para ${wallet}`);
+
+        let value = parseInt(await cosmos.pendingReward());
+        console.log(`Pending of ${name}: ${value}`);
+
+        setPending(value);
+    }, [name, wallet]);
+
+    useEffect(() => {
+        async function fetchData() {
+            let cosmos = await blockchainAdapter.CosmosContract();
+            let elementAddr = await cosmos.obtenerElementoClaimable();
+            let element = await blockchainAdapter.ElementContract(elementAddr);
+
+            setName(await element.name());
+            setSymbol(await element.symbol());
         }
-    }
+        fetchData();
 
-    async getData() {
-        let cosmos = await blockchainAdapter.CosmosContract();
-        let elementAddr = await cosmos.obtenerElementoClaimable();
-        let element = await blockchainAdapter.ElementContract(elementAddr);
-
-        let name = await element.name();
-        let symbol = await element.symbol();
-
-        this.setState({
-            name: name,
-            symbol: symbol
-        });
-
-        this.reloadPending();
-    }
-
-    async reloadPending() {
-        let cosmos = await blockchainAdapter.CosmosContract();
-        let wallet = this.context;
-
-        if (!cosmos || !wallet) {
-            this.setState({
-                pending: null
-            });
-            setTimeout(() => {
-                this.reloadPending();
-            }, 1000);
-            return;
+        const timerId = setInterval(reloadPending, 5000);
+        return () => {
+            clearInterval(timerId);
         }
 
-        console.log(`cargando pendiente de ${this.state.name} para ${wallet}`);
+    }, [reloadPending]);
 
-        let pending = await cosmos.pendingReward();
-        console.log(`Pending of ${this.state.name}: ${pending}`);
-
-        this.setState({
-            pending: parseInt(pending),
-        });
-
-        setTimeout(() => {
-            this.reloadPending();
-        }, 5000);
-    }
-
-    componentDidMount() {
-        this.getData();
-    }
-
-    async subscribe() {
-        await this.state.subscribe();
-    }
-
-    async getPendingReward() {
-        let contract = await blockchainAdapter.CosmosContract();
-        await contract.pendingReward();
-    }
-
-    async claim() {
+    const claim = async () => {
         let contract = await blockchainAdapter.CosmosContract();
         await contract.claim();
     }
 
-    render() {
-        const reward = this.state;
-        return reward && reward.symbol ? (
-            <div className="Reward-card">
-                <img className="Reward-icon" src="/logo192.png" alt="..." />
-                <div className="Reward-body">
-                    <h3>{reward.name}</h3>
-                    <p>Usted tiene {reward.pending} {reward.symbol} pendientes de reclamar</p>
-                </div>
-                <div className="Reward-footer">
-                    <button className="Reward-button" onClick={() => this.claim()}>
-                        Reclamar
-                    </button>
-                </div>
+    return (
+        <div className="Reward-card">
+            <img className="Reward-icon" src="/logo192.png" alt="..." />
+            <div className="Reward-body">
+                <h3>{name}</h3>
+                <p>Usted tiene {pending} {symbol} pendientes de reclamar</p>
             </div>
-        ) : (<div></div>);
-    }
+            <div className="Reward-footer">
+                <button className="Reward-button" onClick={claim}>
+                    Reclamar
+                </button>
+            </div>
+        </div>
+    );
 }
 
-Reward.contextType = WalletContext;
 export default Reward;
