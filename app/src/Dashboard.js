@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import WalletContext from './WalletContext';
 import blockchainAdapter from './services/BlockchainAdapter';
 
 import Element from './Element';
@@ -15,6 +14,7 @@ function Dashboard() {
 
     useEffect(() => {
         async function fetchData() {
+            console.log("Dashboard.fetchData");
             let cosmos = await blockchainAdapter.CosmosContract();
 
             let elementosSize = await cosmos.contarElementos();
@@ -42,7 +42,7 @@ function Dashboard() {
             setMergers(mergers);
         }
         fetchData();
-    });
+    }, []);
 
     return (
         <div className="Dashboard-body">
@@ -53,5 +53,4 @@ function Dashboard() {
     );
 }
 
-Dashboard.contextType = WalletContext;
 export default Dashboard;
