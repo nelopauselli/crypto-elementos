@@ -32,15 +32,10 @@ function Reward() {
             setName(await element.name());
             setSymbol(await element.symbol());
 
-            await reloadPending();
+            reloadPending();
+            blockchainAdapter.onBlock(reloadPending);
         }
         fetchData();
-
-        const timerId = setInterval(reloadPending, 30000);
-        return () => {
-            clearInterval(timerId);
-        }
-
     }, [reloadPending]);
 
     const claim = async () => {

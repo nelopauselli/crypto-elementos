@@ -81,13 +81,9 @@ function Element(props) {
             localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
         
             await reloadBalance();
+            blockchainAdapter.onBlock(reloadBalance);
         };
         fetchData();
-
-        const timerId = setInterval(reloadBalance, 30000);
-        return () => {
-            clearInterval(timerId);
-        }
     }, [address, reloadBalance])
 
     return (

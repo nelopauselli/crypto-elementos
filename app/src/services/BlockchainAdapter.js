@@ -10,13 +10,17 @@ class BlockchainAdapter {
         this.UINT_256_MAX = BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         this.UINT_256_AVG = BigNumber.from("0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff");
         this.cache = {};
+        this.events = {
+            onBlock: []
+        };
 
         const { ethereum } = window;
 
-        let provider;
-
         if (ethereum) {
-            provider = new ethers.providers.Web3Provider(ethereum)
+            let provider = new ethers.providers.Web3Provider(ethereum);
+            provider.on("block", (blockNumber) => {
+                this.events.onBlock.forEach(e=>e.apply(blockNumber));
+            });
             this.signerOrProvider = provider.getSigner();
         } else {
             console.error('No encontramos billetera compatible. :(');
@@ -24,7 +28,7 @@ class BlockchainAdapter {
         }
     }
 
-    async CosmosContract(){
+    async CosmosContract() {
         return await this.GetContract(settings.root, cosmosAbi);
     }
 
@@ -43,6 +47,10 @@ class BlockchainAdapter {
         this.cache[address] = contract;
 
         return contract;
+    }
+
+    onBlock(callback) {
+        this.events.onBlock.push(callback);
     }
 }
 
