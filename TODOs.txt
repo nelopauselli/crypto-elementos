@@ -1,1 +1,2 @@
-JS para agregar token a metamask: https://docs.metamask.io/guide/registering-your-token.html#example
+refactoring to typescript
+listen events from contract

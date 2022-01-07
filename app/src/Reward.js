@@ -31,6 +31,8 @@ function Reward() {
 
             setName(await element.name());
             setSymbol(await element.symbol());
+
+            await reloadPending();
         }
         fetchData();
 

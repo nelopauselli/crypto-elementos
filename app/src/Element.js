@@ -79,6 +79,8 @@ function Element(props) {
             setSymbol(symbol);
 
             localStorage.setItem(address, JSON.stringify({ address: address, name: name, symbol: symbol }));
+        
+            await reloadBalance();
         };
         fetchData();
 
