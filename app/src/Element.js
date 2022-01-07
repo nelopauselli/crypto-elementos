@@ -82,7 +82,7 @@ function Element(props) {
         };
         fetchData();
 
-        const timerId = setInterval(reloadBalance, 5000);
+        const timerId = setInterval(reloadBalance, 30000);
         return () => {
             clearInterval(timerId);
         }

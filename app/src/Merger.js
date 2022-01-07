@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import blockchainAdapter from './services/BlockchainAdapter';
 import { BigNumber } from 'ethers';
 import WalletContext from './WalletContext';
@@ -9,6 +9,8 @@ import ElementSelector from './ElementSelector';
 
 function Merger(props) {
     const wallet = useContext(WalletContext);
+    const [address] = useState(props.address);
+    const [elements] = useState(props.elements);    
     const [name] = useState('Fusionador');
     const [from, setFrom] = useState(null);
     const [quantity, setQuantity] = useState(0);
@@ -19,9 +21,9 @@ function Merger(props) {
     const onChangeFrom = async (e) => {
         const elementAddr = e.target.value;
 
-        let from = await blockchainAdapter.ElementContract(elementAddr);
-        let balance = await from.balanceOf(wallet);
-        let allowance = await from.allowance(wallet, props.address);
+        let elementFrom = await blockchainAdapter.ElementContract(elementAddr);
+        let balance = await elementFrom.balanceOf(wallet);
+        let allowance = await elementFrom.allowance(wallet, address);
 
         let quantity = BigNumber.from(balance);
 
@@ -37,8 +39,8 @@ function Merger(props) {
         let quantity = BigNumber.from(e.target.value);
         console.log(quantity);
 
-        let from = await blockchainAdapter.ElementContract(from);
-        let allowance = await from.allowance(wallet, props.address);
+        let elementFrom = await blockchainAdapter.ElementContract(from);
+        let allowance = await elementFrom.allowance(wallet, address);
 
         setQuantity(quantity.toNumber());
         setAllowance(allowance.gte(quantity));
@@ -54,19 +56,19 @@ function Merger(props) {
 
     const approve = async () => {
         let contract = await blockchainAdapter.ElementContract(from);
-        let approved = await contract.approve(props.address, blockchainAdapter.UINT_256_MAX);
+        let approved = await contract.approve(address, blockchainAdapter.UINT_256_MAX);
         console.log(approved);
     }
 
     const approveOne = async () => {
         let contract = await blockchainAdapter.ElementContract(from);
-        let approved = contract.approve(props.address, quantity);
+        let approved = contract.approve(address, quantity);
         console.log(approved);
     }
 
     const fusionar = async () => {
-        console.log(`cargando fusionador de la dirección ${props.address}`);
-        let contract = await blockchainAdapter.MergerContract(props.address);
+        console.log(`cargando fusionador de la dirección ${address}`);
+        let contract = await blockchainAdapter.MergerContract(address);
 
         console.log(`fusionando ${from} x ${quantity} => ${to}`);
         contract.fusionar(from, to, quantity);
@@ -81,11 +83,11 @@ function Merger(props) {
                         {name}
                     </div>
                     <div>
-                        <Address value={props.address}></Address>
+                        <Address value={address}></Address>
                     </div>
                 </h3>
                 <div>
-                    <ElementSelector className="Merger-selector" source={props.elements} onChange={onChangeFrom}></ElementSelector>
+                    <ElementSelector className="Merger-selector" source={elements} onChange={onChangeFrom}></ElementSelector>
                     {
                         from ? (
                             <div>
@@ -96,7 +98,7 @@ function Merger(props) {
                     }
                     {
                         allowance ? (
-                            <ElementSelector className="Merger-selector" source={props.elements} onChange={onChangeTo}></ElementSelector>
+                            <ElementSelector className="Merger-selector" source={elements} onChange={onChangeTo}></ElementSelector>
                         ) : from ? (
                             <div>
                                 <button className="Merger-button" onClick={approve}>Aprobar por siempre</button>

@@ -5,7 +5,7 @@ import WalletContext from './WalletContext';
 
 import "./Reward.css";
 
-function Reward(props) {
+function Reward() {
     const [name, setName] = useState('...');
     const [symbol, setSymbol] = useState(null);
     const [pending, setPending] = useState(null);
@@ -34,7 +34,7 @@ function Reward(props) {
         }
         fetchData();
 
-        const timerId = setInterval(reloadPending, 5000);
+        const timerId = setInterval(reloadPending, 30000);
         return () => {
             clearInterval(timerId);
         }
