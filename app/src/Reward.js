@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react'
+import Amount from './Amount';
 import blockchainAdapter from './services/BlockchainAdapter';
 
 import WalletContext from './WalletContext';
@@ -48,7 +49,7 @@ function Reward() {
             <img className="Reward-icon" src="/logo192.png" alt="..." />
             <div className="Reward-body">
                 <h3>{name}</h3>
-                <p>Usted tiene {pending} {symbol} pendientes de reclamar</p>
+                <p>Usted tiene <Amount value={pending} unit={symbol}></Amount> pendientes de reclamar</p>
             </div>
             <div className="Reward-footer">
                 <button className="Reward-button" onClick={claim}>
