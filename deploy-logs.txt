@@ -1,0 +1,450 @@
+$  truffle migrate --network matic -f 1 --to 1
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+1_big_bang.js
+=============
+
+   Deploying 'Cosmos'
+   ------------------
+   > transaction hash:    0x1653901e5610bd39dac6e33fd90530f5ee90c8930cad376b2fe4518d2e9da5c7
+   > Blocks: 2            Seconds: 8
+   > contract address:    0x5462153725FBEB48F53B402d87E36Ba72B823982
+   > block number:        24291495
+   > block timestamp:     1643224471
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.490619067464969016
+   > gas used:            1253000 (0x131e88)
+   > gas price:           2.500000011 gwei
+   > value sent:          0 ETH
+   > total cost:          0.003132500013783 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291496)
+   > confirmation number: 2 (block: 24291497)
+
+   Deploying 'Materia'
+   -------------------
+   > transaction hash:    0x343af3c3800ae064ea4b1e3a353b7638b769365364b3a77f5dea571e13d9596d
+   > Blocks: 2            Seconds: 8
+   > contract address:    0xc9e099dD531A18DEEbA9b3b229Aa0a7cc154b84e
+   > block number:        24291500
+   > block timestamp:     1643224491
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.48750313495001254
+   > gas used:            1246373 (0x1304a5)
+   > gas price:           2.500000012 gwei
+   > value sent:          0 ETH
+   > total cost:          0.003115932514956476 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291501)
+   > confirmation number: 2 (block: 24291502)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.006248432528739476 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.006248432528739476 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 2 --to 2
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+2_hidrogeno.js
+==============
+
+   Deploying 'Hidrogeno'
+   ---------------------
+   > transaction hash:    0xa28a297061d87c136ae51059d03d022406c3986d07a770cb4b32fb3bbf3e5c49
+   > Blocks: 1            Seconds: 4
+   > contract address:    0xf6702b727cf6E840ab2d26DaC64550349f68d196
+   > block number:        24291514
+   > block timestamp:     1643224547
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.482663952428720137
+   > gas used:            1935673 (0x1d8939)
+   > gas price:           2.500000011 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004839182521292403 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291515)
+   > confirmation number: 2 (block: 24291516)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.004839182521292403 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.004839182521292403 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 3 --to 3
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+3_helio.js
+==========
+
+   Deploying 'Helio'
+   -----------------
+   > transaction hash:    0x06b759ab67e913a111df658a19bbe3295c9a6f5129e6cd6c1443c5991efae7a3
+   > Blocks: 1            Seconds: 4
+   > contract address:    0x744A847AAA8d730234672C0902682a7B805aC481
+   > block number:        24291525
+   > block timestamp:     1643224595
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.477824859909363767
+   > gas used:            1935637 (0x1d8915)
+   > gas price:           2.50000001 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00483909251935637 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291526)
+   > confirmation number: 2 (block: 24291527)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.00483909251935637 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.00483909251935637 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 4 --to 4
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+4_fusionador.js
+===============
+
+   Deploying 'Fusionador'
+   ----------------------
+   > transaction hash:    0xca5bc09b878bb5aa27b6f8747be8de465346cda34117f7563b32147e65f1537f
+   > Blocks: 1            Seconds: 4
+   > contract address:    0x358Fa6Df40D94ad37A225fa982cA71F68dB2bB39
+   > block number:        24291536
+   > block timestamp:     1643224639
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.474852904897475947
+   > gas used:            1188782 (0x1223ae)
+   > gas price:           2.50000001 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00297195501188782 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291537)
+   > confirmation number: 2 (block: 24291538)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.00297195501188782 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.00297195501188782 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 5 --to 5
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+5_registrar_en_cosmos.js
+========================
+   -------------------------------------
+   > Total cost:                   0 ETH
+
+
+Summary
+=======
+> Total deployments:   0
+> Final cost:          0 undefined
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 6 --to 8
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+6_Carbono.js
+============
+
+   Deploying 'Carbono'
+   -------------------
+   > transaction hash:    0x7fb74639b34b8cfffae9f8692ba4af38e87b43e391c820a0e91bfe4d10b6c00c
+   > Blocks: 1            Seconds: 4
+   > contract address:    0xd9B665f493ff8cd3E332f6E6772866f313AaFcB5
+   > block number:        24291662
+   > block timestamp:     1643225023
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.46884641237553999
+   > gas used:            1935649 (0x1d8921)
+   > gas price:           2.500000009 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004839122517420841 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291663)
+   > confirmation number: 2 (block: 24291664)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.004839122517420841 ETH
+
+
+7_Oxigeno.js
+============
+
+   Deploying 'Oxigeno'
+   -------------------
+   > transaction hash:    0x1fac2c672c77ffae9ee28182f6c548c2da3e651c27572512f4faf680ed6fe9f1
+   > Blocks: 1            Seconds: 4
+   > contract address:    0xd1F5A89A28C2B6F714a717F4Dc5F2391a0e7d80D
+   > block number:        24291670
+   > block timestamp:     1643225055
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.463685822356961866
+   > gas used:            1935649 (0x1d8921)
+   > gas price:           2.500000009 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004839122517420841 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+Error [ERR_UNHANDLED_ERROR]: Unhandled error. ({
+  code: -32603,
+  message: 'Too Many Requests',
+  data: { originalError: {} }
+})
+    at new NodeError (internal/errors.js:322:7)
+    at Web3ProviderEngine.emit (events.js:389:17)
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\index.js:54:14       
+    at afterRequest (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\index.js:148:21)
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\index.js:174:21      
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\index.js:232:9       
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\async\internal\once.js:12:16
+    at replenish (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\async\internal\eachOfLimit.js:61:25)
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\async\internal\eachOfLimit.js:71:9        
+    at eachLimit (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\async\eachLimit.js:43:36)      
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\async\internal\doLimit.js:9:16
+    at end (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\index.js:211:5) 
+    at C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\subproviders\rpc.js:52:18
+    at Request._callback (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\web3-provider-engine\subproviders\rpc.js:53:11)
+    at Request.self.callback (C:\Users\nelop\projects\crypto-elementos\contracts\node_modules\request\request.js:185:22)
+    at Request.emit (events.js:400:28)
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 7 --to 7
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+7_Oxigeno.js
+============
+
+   Deploying 'Oxigeno'
+   -------------------
+   > transaction hash:    0x68f748aaf1f03d4374194c49ea6f8334a837b4183525dd6dfb9c3a21fef69630
+   > Blocks: 2            Seconds: 8
+   > contract address:    0xD3FD6c2320E39d52504f991bDEEb0FB512b8B665
+   > block number:        24291679
+   > block timestamp:     1643225091
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.458846699839541025
+   > gas used:            1935649 (0x1d8921)
+   > gas price:           2.500000009 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004839122517420841 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291680)
+   > confirmation number: 2 (block: 24291681)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.004839122517420841 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.004839122517420841 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 8 --to 8
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+8_Nitrogeno.js
+==============
+
+   Deploying 'Nitrogeno'
+   ---------------------
+   > transaction hash:    0xfeca7d58d27dc014926328a9db9e599c5615054ee1261a307e54c41f8f9fff8e
+   > Blocks: 2            Seconds: 4
+   > contract address:    0x521362527807f056DB9B85E54962Fa7377A1734C
+   > block number:        24291691
+   > block timestamp:     1643225139
+   > account:             0xd52209827dF628A662f4eCD0F6BA4A334Afc33aA
+   > balance:             0.453686049820962685
+   > gas used:            1935673 (0x1d8939)
+   > gas price:           2.500000009 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004839182517421057 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 24291692)
+   > confirmation number: 2 (block: 24291693)
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.004839182517421057 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.004839182517421057 ETH
+
+
+
+nelop@Vivo MINGW64 ~/projects/crypto-elementos/contracts (master)
+$  truffle migrate --network matic -f 9 --to 9
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+9_abis.js
+=========
+   -------------------------------------
+   > Total cost:                   0 ETH
+
+
+Summary
+=======
+> Total deployments:   0
+> Final cost:          0 undefined
