@@ -16,10 +16,7 @@ function Reward() {
         let cosmos = await blockchainAdapter.CosmosContract();
         if (!cosmos || !wallet) return;
 
-        console.log(`cargando pendiente de ${name} para ${wallet}`);
-
         let value = parseInt(await cosmos.pendingReward());
-        console.log(`Pending of ${name}: ${value}`);
 
         setPending(value);
     }, [name, wallet]);

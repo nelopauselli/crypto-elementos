@@ -37,7 +37,6 @@ function Merger(props) {
 
     const onQuantityChange = async (e) => {
         let quantity = BigNumber.from(e.target.value);
-        console.log(quantity);
 
         let elementFrom = await blockchainAdapter.ElementContract(from);
         let allowance = await elementFrom.allowance(wallet, address);
@@ -50,27 +49,22 @@ function Merger(props) {
     }
 
     const onChangeTo = (e) => {
-        console.log(e.target.value);
         setTo(e.target.value);
     }
 
     const approve = async () => {
         let contract = await blockchainAdapter.ElementContract(from);
         let approved = await contract.approve(address, blockchainAdapter.UINT_256_MAX);
-        console.log(approved);
     }
 
     const approveOne = async () => {
         let contract = await blockchainAdapter.ElementContract(from);
         let approved = contract.approve(address, quantity);
-        console.log(approved);
     }
 
     const fusionar = async () => {
-        console.log(`cargando fusionador de la dirección ${address}`);
         let contract = await blockchainAdapter.MergerContract(address);
 
-        console.log(`fusionando ${from} x ${quantity} => ${to}`);
         contract.fusionar(from, to, quantity);
     }
 

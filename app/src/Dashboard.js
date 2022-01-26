@@ -14,29 +14,24 @@ function Dashboard() {
 
     useEffect(() => {
         async function fetchData() {
-            console.log("Dashboard.fetchData");
             let cosmos = await blockchainAdapter.CosmosContract();
 
             let elementosSize = await cosmos.contarElementos();
-            console.log("hay " + elementosSize + " elementos registrados");
             let elementosLength = parseInt(elementosSize);
 
             let elementos = Array(elementosLength);
             for (let index = 0; index < elementosLength; index++) {
                 let elementAddress = await cosmos.obtenerElemento(index);
-                console.log('Elemento: ', elementAddress);
                 elementos[index] = elementAddress;
             }
             setElements(elementos);
 
             let fusionadoresSize = await cosmos.contarFusionadores();
-            console.log("hay " + fusionadoresSize + " fusionadores registrados");
             let fusionadoresLength = parseInt(fusionadoresSize);
 
             let mergers = Array(fusionadoresLength);
             for (let index = 0; index < fusionadoresLength; index++) {
                 let mergerAddress = await cosmos.obtenerFusionador(index);
-                console.log('Fusionador: ', mergerAddress);
                 mergers[index] = mergerAddress;
             }
             setMergers(mergers);

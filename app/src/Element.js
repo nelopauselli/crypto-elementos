@@ -18,9 +18,7 @@ function Element(props) {
         let contract = await blockchainAdapter.ElementContract(address);
         if (!contract || !wallet) return;
 
-        console.log(`cargando balance de ${name} para ${wallet}`);
         let value = parseInt(await contract.balanceOf(wallet));
-        console.log(`Balance of ${name}: ${value}`);
 
         if (value !== balance)
             setBalance(value);
@@ -34,7 +32,6 @@ function Element(props) {
             return;
         }
 
-        console.log(`agregando token ${symbol} a metamask`);
 
         const tokenAddress = address;
         const tokenSymbol = symbol;
@@ -55,21 +52,13 @@ function Element(props) {
                     },
                 },
             });
-
-            if (wasAdded) {
-                console.log('Thanks for your interest!');
-            } else {
-                console.log('Your loss!');
-            }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     useEffect(() => {
         async function fetchData() {
-            console.log(`cargando elemento de la dirección ${address}`);
-
             let contract = await blockchainAdapter.ElementContract(address);
 
             let name = await contract.name();

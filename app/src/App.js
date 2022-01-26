@@ -17,7 +17,6 @@ class App extends Component {
   }
 
   onWalletChange(account) {
-    console.log(`Cuenta: ${account}`);
     this.setState({ account: account });
   }
 

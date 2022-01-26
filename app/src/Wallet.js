@@ -21,11 +21,8 @@ class Wallet extends Component {
             return;
         }
 
-        console.log("usando ethereum");
-
         try {
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            console.log(`Encontramos ${accounts.length} direcciones`);
             if (accounts.length) {
                 this.setState({ account: accounts[0] });
                 this.props.onChange(accounts[0])
@@ -33,7 +30,6 @@ class Wallet extends Component {
 
             let self = this;
             ethereum.on('accountsChanged', function (accounts) {
-                console.log(`Account change ${accounts.length}`);
                 if (accounts.length) {
                     self.setState({ account: accounts[0] });
                     self.props.onChange(accounts[0])
