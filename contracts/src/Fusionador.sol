@@ -23,17 +23,14 @@ contract Fusionador is IFusionador, Ownable {
     );
 
     constructor(address materiaAddress) {
-        require(
-            materiaAddress != address(0),
-            "Falta indicar la materia"
-        );
+        require(materiaAddress != address(0), "Falta indicar la materia");
         _materia = Materia(materiaAddress);
     }
 
     function add(address elementoAddr) public payable onlyOwner {
         //TODO: validar quien puede agregar elementos a la lista
         Elemento elemento = Elemento(elementoAddr);
-        
+
         _materia.approve(elementoAddr, UINT_256_MAX);
         elementos[elementoAddr] = elemento;
     }
